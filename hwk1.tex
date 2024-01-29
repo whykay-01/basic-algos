@@ -224,28 +224,28 @@ Add the names and NetID(s) of your collaborators at the start of your solution f
 	\ifnum\me<2
 \begin{solution}   \\
 \\
-- factorial grows faster than the constant
+1) factorial grows faster than the constant
 $$~~ f(n) = n! + 34, ~~ g(n) = n!; ~~ n! + 34 = \Theta(n!);$$
 \\
-- cubic grows faster than the quadratic
+2) cubic grows faster than the quadratic
 $$~~ f(n) = n^3 + n^2, ~~ g(n) = n^3; ~~ n^3 + n^2 = \Theta(n^3)$$
 \\
-- exponential grows faster than the polynomial
+3) exponential grows faster than the polynomial
 $$~~ f(n) = 4^n + n^{3.5}, ~~g(n) = ; ~~ 4^n + n^{3.5} = \Theta(4^n)$$
 \\
-- polynomial to the power of 3.5 grows faster than the polynomial into the power of 1
+4) polynomial to the power of 3.5 grows faster than the polynomial into the power of 1
 $$~~ f(n) = n^{3.5} - 5n, ~~g(n) = n^{3.5}; ~~ n^{3.5} - 5n = \Theta(n^{3.5}) $$
 \\
-- there is only one term, so the term itself is the tight bound
+5) there is only one term, so the term itself is the tight bound
 $$~~f(n) = 5^{n}, ~~g(n) = 5^{n}, ~~5^{n} = \Theta(5^{n})$$
 \\
-- constants do not matter and $n^2\log(n)$ grows faster than a quadratic function
+6) constants do not matter and $n^2\log(n)$ grows faster than a quadratic function
 $$~~f(n) = n^2\log(n) + 100n^2, ~~g(n) = n^2\log(n); ~~n^2\log(n) + 100n^2 = \Theta(n^2\log(n))$$
 \\
-- logarithmic function grows faster with comparison to the constant
+7) logarithmic function grows faster with comparison to the constant
 $$~~f(n) = \log(n) + 23, ~~g(n) = \log(n); ~~\log(n) + 23 = \Theta(\log(n))$$
 \\
-- $n^n$ is growing faster than the $\log(n)$
+8) $n^n$ is growing faster than the $\log(n)$
 $$~~f(n) = n^n + \log(n), ~~g(n) = n^n; ~~n^n + \log(n) = \Theta(n^n)$$  
 \end{solution}
 	\fi
@@ -254,8 +254,8 @@ $$~~f(n) = n^n + \log(n), ~~g(n) = n^n; ~~n^n + \log(n) = \Theta(n^n)$$
 	Sort all the resulting functions from part (a) in asymptotically increasing order of growth rate.
 
 	\ifnum\me<2
-\begin{solution}   
-
+\begin{solution} \\  
+\\
 $1) ~~ \log(n) + 23,$ \\
 $2) ~~ n^3 + n^2,$ \\
 $3) ~~ n^{3.5} - 5n,$ \\
@@ -278,7 +278,25 @@ $8) ~~ n^n + \log(n) $\\
 	~~\sqrt{n^{17}+12n^{16}},~~\log_7(n^{35}) + 10,~~\log_2^2 n + \log_4 n$$
 	
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+\\
+1) poly-logarithmic is always slower than polynomial functions
+$$~~ f(n) = n^4 \log^5 n + n^5 \log^4 n, ~~ g(n) = n^5 \log^4 n; ~~ n^4 \log^5 n + n^5 \log^4 n = \Theta(n^5 \log^4 n);$$
+\\
+2) after simplification, $n^2$ is faster than $n$. (Note that: $9^{n+\log_9 n} = 9^{n}n$)
+$$~~ f(n) = 9^{n+\log_9 n} + n^29^n, ~~ g(n) = n^29^n; ~~9^{n+\log_9 n} + n^29^n = \Theta(n^29^n);$$
+\\
+3) Note that: $3^{2n} = 9^{n}$
+$$~~ f(n) = 3^{2n} + 4^n, ~~ g(n) = 9^n; ~~3^{2n} + 4^n = \Theta(9^n);$$
+\\
+4) I have no idea how to solve this one...
+$$~~ f(n) = ???; ~~ g(n) = ???; ~~??? = \Theta(???);$$
+\\
+5) I have no idea how to solve this one...
+$$~~ f(n) = \log_7(n^{35}) + 10; ~~ g(n) = 35\log_7(n) = \log_7(n); ~~\log_7(n^{35}) + 10 = \Theta(\log_7(n));$$
+\\
+
+\end{solution}
 	\fi
 
 
@@ -323,9 +341,9 @@ $f(n) = 4^{\log_2 n}$; \quad
 
 \ifnum\me<2
 \begin{solution}   
-
-- $f(n) = 4^{\log_2 n} = 2^{2{\log_2 n}} = 2^{\log_2 n^{2}} = n^2$\\
-- $g(n) = n^2 +  n (\log_4 n)^{10};$ or simply $O(n^2)$\\
+% PLEASE HAVE A LOOK AT THIS!
+1) $f(n) = 4^{\log_2 n} = 2^{2{\log_2 n}} = 2^{\log_2 n^{2}} = n^2$\\
+2) $g(n) = n^2 +  n (\log_4 n)^{10};$ or simply $O(n^2)$\\
 \\
 Thus, $f(n) = \Theta(g(n))$, which implies that it is also $f(n) = \Omega(g(n))$ and $f(n) = O(g(n))$
 
@@ -380,7 +398,17 @@ Thus, $f(n) = \Theta(g(n))$, which implies that it is also $f(n) = \Omega(g(n))$
  \end{equation*}
 	 Solve using expansion method. 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}   
+
+$T(n) = 2T(n/16) + \log n; ~~n > 1\\$
+\\
+$T(n) = 1; ~~n = 1\\$
+
+$T(n/16) = 2T(n/256) + \log (n/16)$\\
+\\
+$T(n/16^{k}) = 2T(n/16^{k+1}) + \log n$
+
+\end{solution}
 	\fi
 \end{subtasks}
 
@@ -459,7 +487,12 @@ What mathematical function does the {\sc Mystery} procedure represent? Express i
 
 	
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\   
+{\sc Arcane} certainly represents a mathematical function that enables multiplication of an input by 3 $\to ~~f(n) = 3n$
+
+{\sc Mystery}, on the other hand is a bit more complex, as it contains two different calls, which in turn produce more recursive calls.
+
+\end{solution}
 	\fi
  
 \end{subtasks}
