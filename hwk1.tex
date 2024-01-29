@@ -256,14 +256,16 @@ $$~~f(n) = n^n + \log(n), ~~g(n) = n^n; ~~n^n + \log(n) = \Theta(n^n)$$
 	\ifnum\me<2
 \begin{solution} \\  
 \\
-$1) ~~ \log(n) + 23,$ \\
-$2) ~~ n^3 + n^2,$ \\
-$3) ~~ n^{3.5} - 5n,$ \\
-$4) ~~ n^2\log(n) + 100n^2, $\\
-$5) ~~ 4^n + n^{3.5}, $\\
-$6) ~~ 5^{n}, $\\
-$7) ~~ n! + 34, $\\
-$8) ~~ n^n + \log(n) $\\
+$1) ~~ \log(n) + 23 $ \\
+$2) ~~ n^3 + n^2 $ \\
+$3) ~~ n^{3.5} - 5n $ \\
+$4) ~~ n^2\log(n) + 100n^2 $\\
+$5) ~~ 4^n + n^{3.5} $\\
+$6) ~~ 5^{n} $\\
+$7) ~~ n! + 34  $\\
+$8) ~~ n^n + \log(n)$\\
+
+$\log(n) \to n^3 \to n^{3.5} \to n^2\log(n) \to 4^n \to 5^{n} \to n! \to n^n  $
 
 
 \end{solution}
@@ -292,8 +294,11 @@ $$~~ f(n) = 3^{2n} + 4^n, ~~ g(n) = 9^n; ~~3^{2n} + 4^n = \Theta(9^n);$$
 4) I have no idea how to solve this one...
 $$~~ f(n) = ???; ~~ g(n) = ???; ~~??? = \Theta(???);$$
 \\
-5) I have no idea how to solve this one...
+5) We can forget about the constant and then take the power within the log out.
 $$~~ f(n) = \log_7(n^{35}) + 10; ~~ g(n) = 35\log_7(n) = \log_7(n); ~~\log_7(n^{35}) + 10 = \Theta(\log_7(n));$$
+\\
+6) I have no idea how to solve this one...
+$$~~ f(n) = \log_2^2 n + \log_4 n; ~~ g(n) = ???; ~~\log_2^2 n + \log_4 n = \Theta(???);$$
 \\
 
 \end{solution}
