@@ -291,14 +291,14 @@ $$~~ f(n) = 9^{n+\log_9 n} + n^29^n, ~~ g(n) = n^29^n; ~~9^{n+\log_9 n} + n^29^n
 3) Note that: $3^{2n} = 9^{n}$
 $$~~ f(n) = 3^{2n} + 4^n, ~~ g(n) = 9^n; ~~3^{2n} + 4^n = \Theta(9^n);$$
 \\
-4) I have no idea how to solve this one...
-$$~~ f(n) = ???; ~~ g(n) = ???; ~~??? = \Theta(???);$$
+4) Leading term is $n^{17}$, so if we take $\sqrt{n^{17}} = n^{8.5}$ 
+$$~~ f(n) = \sqrt{n^{17}+12n^{16}}; ~~ g(n) = n^{8.5}; ~~ \sqrt{n^{17}+12n^{16}} = \Theta(n^{8.5});$$
 \\
 5) We can forget about the constant and then take the power within the log out.
 $$~~ f(n) = \log_7(n^{35}) + 10; ~~ g(n) = 35\log_7(n) = \log_7(n); ~~\log_7(n^{35}) + 10 = \Theta(\log_7(n));$$
 \\
-6) I have no idea how to solve this one...
-$$~~ f(n) = \log_2^2 n + \log_4 n; ~~ g(n) = ???; ~~\log_2^2 n + \log_4 n = \Theta(???);$$
+6) Poly-log functions grow faster than the regular logs.
+$$~~ f(n) = \log_2^2 n + \log_4 n; ~~ g(n) = \log_2^2 n; ~~\log_2^2 n + \log_4 n = \Theta(\log_2^2 n);$$
 \\
 
 \end{solution}
@@ -309,7 +309,12 @@ $$~~ f(n) = \log_2^2 n + \log_4 n; ~~ g(n) = ???; ~~\log_2^2 n + \log_4 n = \The
 	Sort all the resulting functions from part (c) in asymptotically decreasing order of growth rate.
 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+\\
+From the fastest-growing function to the slowest-growing one.\\
+\\
+$n^29^n \to ~~9^n \to ~~n^5 \log^4 n \to ~~n^{8.5} \to ~~\log_2^2 n \to \log_7(n)$
+\end{solution}
 	
 	
 	\fi
