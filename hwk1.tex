@@ -467,6 +467,20 @@ Let us assume $\exists k > 0$ such that $f(k) = 5^k + 3^k$, which would also pro
 \textbf{Inductive step:}
 Let us take $k+1$ such that $f(k+1) = 5^{k+1} + 3^{k+1}$. Now, we want to show that $f(k+1) \% 2 == 0$, which shows the divisibility by 2.
 
+Let's expand the terms:
+
+$f(k+1) = 5^{k}\cdot5^{1} + 3^{k}\cdot3^{1}$\\
+$ = 5^{k}\cdot(4+1) + 3^{k}\cdot(2+1)$\\
+$ = 4\cdot5^{k}+5^{k} + 3^{k}+2\cdot3^{k}$\\
+$ = 4\cdot5^{k}+ f(k) +2\cdot3^{k}$\\
+% \vdots\\
+$ = 3\cdot5^{k}+5^{k} + 3^{k}+1\cdot3^{k} + f(k)$\\
+$ = 2\cdot5^{k}+5^{k} + 3^{k}+0\cdot3^{k} + 2f(k)$\\
+$ = 2\cdot5^{k} + 3f(k)$\\
+
+Since $f(k)$ is divisible by 2 and $2\cdot5^{k}$ is also divisible by 2, we can conclude that the sum of two terms which are divisible by 2 produce a number that must be divisible by 2
+
+
 \end{solution}
 	\fi
 	
