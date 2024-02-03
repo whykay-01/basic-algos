@@ -313,7 +313,7 @@ $$~~ f(n) = \log_2^2 n + \log_4 n; ~~ g(n) = \log_2^2 n; ~~\log_2^2 n + \log_4 n
 \\
 From the fastest-growing function to the slowest-growing one.\\
 \\
-$n^29^n \to ~~9^n \to ~~n^5 \log^4 n \to ~~n^{8.5} \to ~~\log_2^2 n \to \log_7(n)$
+$n^29^n \to ~~9^n \to ~~n^{8.5} \to ~~n^5 \log^4 n \to ~~\log_2^2 n \to \log_7(n)$
 \end{solution}
 	
 	
@@ -373,7 +373,16 @@ Thus, $f(n) = \Theta(g(n))$, which implies that it is also $f(n) = \Omega(g(n))$
 \item $f(n) =n^{\log_2 20}$; \quad $g(n) = 20^{\log_2 n}$.
 
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+The trick is the following:
+$20 = 2^{log_{2}20}$\\
+
+$20^{log_2 n} = (2^{log_{2}20})^{log_2 n} = (2^{log_2 n})^{log_{2}20} = n^{log_2 20}$\\
+
+Thus, $f(n) = \Theta(g(n))$, which implies that it is also $f(n) = \Omega(g(n))$ \textbf{AND} $f(n) = O(g(n))$
+
+\end{solution}
 \fi
 
 \item $f(n) =\left(\frac{1}{2}\right)^n + 3 n^{6}$; \quad $g(n) = 2^{\log_2 n}$.
@@ -435,7 +444,9 @@ $T(n) = 1; ~~n = 1\\$
 
 $T(n/16) = 2T(n/256) + \log (n/16)$\\
 \\
-$T(n/16^{k}) = 2T(n/16^{k+1}) + \log n$
+$T(n/4^{k}) = 2^{k+1} \cdot T(n/4^{k+2}) + \log_{16}(n) + \log_{16}(n/16) + ... + \log_{16} (n/4^{k-1}) + \log_{16} (n/4^{k})$\\
+
+Note that $k$ runs from $0 \to log_4 (n) - 2$
 
 \end{solution}
 	\fi
@@ -501,7 +512,7 @@ Since $f(k)$ is divisible by 2 and $2\cdot5^{k}$ is also divisible by 2, we can 
 
 First of all, the theorem is wrong. It is easily provable by contradiction. Take $x = 3, y = 5$. Note that both of them are positive integers. But the maximum of the two is 5. Thus, $n = 5$, but at the same time $x \neq y$.
 
-Speaking about where the proof went wrong at the inductive step. If we are saying that $(x-1 = y-1) \rightarrow (x - 1 = y - 1 = k)$. Take $x or y = 1$, in this case $k = x - 1 = 1 - 1 = 0$, which is no longer a positive integer. 
+Speaking about where the proof went wrong at the inductive step. If we are saying that $(x-1 = y-1) \rightarrow (x - 1 = y - 1 = k)$. Take $x$ or $y = 1$, in this case $k = x - 1 = 1 - 1 = 0$, which is no longer a positive integer. 
 
 \end{solution}
 	\fi
@@ -520,7 +531,31 @@ your generosity to your friend group, consisting of $8$ individuals, yourself in
 
 Embarking on a sharing spree, you slice the pizza into $8$ equal portions, devouring one while distributing the rest. Remarkably, $4$ of your friends belongs to other disjoint friend groups of $8$. Extending the generosity, these 4 friends repeat the slicing ritual. Amazingly, every friend group has 4 members who continue the ritual. This communal pizza enjoyment continues until the cut slice reaches a minimal size of $1$ unit. Formulate a recurrence relation in terms of the total number of slices and solve using any method.   
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Let's first think about the initial case.\\ 
+
+$T(n) = 4T(n/8) + 4$\\
+
+By expanding this, we can get the following general term:\\
+
+$T(n) = 4^{k}T(n/8^{k})+ 4^k + 4^{k-1} + … + 4$\\
+
+Since the assumption is that $T(1) = 1$, we proceed to the following statement:\\
+
+$\frac{n}{8^k} = 1 \to k = log_8 n$\\
+
+Which actually serves as s terminating condition. \\
+
+$T(n) = 4^{log_8 n} \cdot T(1) + 4^{log_8 n} + 4^{log_8 (n)-1} + … + 4$\\
+
+It actually is a geometric progression, which could be expressed in the following terms:
+
+$4^{log_8 n} + \frac{4\cdot(4^{log_8 n} - 1)}{3} = n^{log_8 4} + \frac{4\cdot(n^{log_8 4} - 1)}{3} = n^{\frac{2}{3}} + 4\cdot \frac{n^{\frac{2}{3}} - 1}{3} = T(n)$\\
+
+Thus, $T(n) = \Theta(n^{2/3})$
+
+\end{solution}
 	\fi
 
 \item (\textbf{Extra Credit}) \points{5} 
@@ -550,9 +585,26 @@ What mathematical function does the {\sc Mystery} procedure represent? Express i
 	
 	\ifnum\me<2
 \begin{solution}\\   
-{\sc Arcane} certainly represents a mathematical function that enables multiplication of an input by 3 $\to ~~f(n) = 3n$
+{\sc Arcane} certainly represents a mathematical function that enables multiplication of an input by 3 $\to ~~f(n) = 3n$. It could be easily seen from the general term of the recurrence relation: $Arcane(n) = 2^{k}Arcane(\frac{n}{2^k})$\\
 
 {\sc Mystery}, on the other hand is a bit more complex, as it contains two different calls, which in turn produce more recursive calls.
+
+Let's start expanding the recurrence relations one by one. \\
+
+1) $Mystery(n) = 3n + Cland(n)$\\
+2) $Clandestine(n) = Mystery(n-1)$\\ 
+
+General term:
+$Mystery(n-k) = 3(n-k) + Mystery(n-k+1)$\\
+...\\
+$Mystery(2) = 6 + Mystery(1)$\\
+$Mystery(1) = 3$\\
+
+Summing all the terms we get:
+$3n + 3(n-1) + 3(n-2) + ... + 3(n-i) + 6+ 3$, or in other words simple arithmetic progression multiplied by 3.
+
+Thus, the end mathematical function representing the $Mystery(n)$ function would be: $\frac{3n(n-1)}{2}$
+
 
 \end{solution}
 	\fi
