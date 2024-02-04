@@ -1,0 +1,432 @@
+% me=0 student solutions (ps file), me=1 - my solutions (sol file),
+% me=2 - assignment (hw file)
+\def\me{0} \def\num{2} %homework number
+
+\def\due{11:55 pm on Thursday, February 8} %due date
+
+\def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
+
+% **** INSERT YOUR NAME HERE ****
+\def\name{Name}
+
+% **** INSERT YOUR NETID HERE ****
+\def\netid{NetID}
+
+% **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
+\def\collabs{NetID1, NetID2}
+
+
+\iffalse
+
+INSTRUCTIONS: replace # by the homework number.  (if this is not
+ps#.tex, use the right file name)
+
+Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate LaTeX code.  There is a section below for student macros.
+It is not recommended to change any other parts of the code.
+
+
+\fi
+%
+
+\documentclass[11pt]{article}
+
+
+% ==== Packages ====
+\usepackage{amsfonts,amsmath}
+\usepackage{latexsym}
+\usepackage{etoolbox}
+\usepackage{totcount}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\footskip}{1in} \setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+	\renewcommand{\thepage}{#1, Page \arabic{page}}
+	\noindent
+	\begin{center}
+		\framebox{ \vbox{ \hbox to 5.78in { {\bf \course} \hfill #2 }
+				\vspace{4mm} \hbox to 5.78in { {\Large \hfill #5 \hfill} }
+				\vspace{2mm} \hbox to 5.78in { {\it #3 \hfill #4} }
+				\ifnum\me=0
+				\vspace{2mm} \hbox to 5.78in { {\it Collaborators: \collabs
+						\hfill} }
+				\fi
+		} }
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcounter{pppc}
+\newcommand{\prob}{\arabic{pppp}} %problem number
+\newcommand{\increase}{\stepcounter{pppp}\stepcounter{pppc}} %problem number
+
+% Arguments: Title, Number of Points
+\newcommand{\newproblem}[2]{
+	\increase
+	\restartlist{subtasks}
+	\ifnum\me=0
+	\ifnum\prob>0 \newpage \fi
+	\setcounter{page}{1}
+	\handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+	{\today}{Name: \name{} (\netid)}{Due: \due}
+	{Solutions to Problem \prob\ of Homework \num\ (#2)}
+	\else
+	\section*{Problem \num-\prob~(#1) \hfill {#2}}
+	\fi
+}
+
+\newlist{subtasks}{enumerate}{1}
+\setlist[subtasks]{label={(\alph*)},resume}
+
+\newcounter{numpppp}
+\loop
+\stepcounter{numpppp}
+% workaround bug in totcount (means \newtotcounter{points\arabic{pointsct}})
+\begingroup%
+\edef\tempcounter@@name{points\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\edef\tempcounter@@name{ecpoints\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\endgroup
+\ifnum \value{numpppp}<500 % max number of tasks supported
+\repeat
+
+% formating of output
+\newcommand{\disppoints}[1]{%
+	\texorpdfstring{(#1~\ifnumequal{#1}{1}{point}{points})}{}
+}
+
+% adds and displays
+\newcommand{\points}[1]{%
+	\texorpdfstring{\addtocounter{points\arabic{pppc}}{#1}\disppoints{#1}}{}%
+}
+\newcommand{\ecpoints}[1]{%
+	\texorpdfstring{\addtocounter{ecpoints\arabic{pppc}}{#1}\ec \disppoints{#1}}{}%
+}
+
+% total points of current task         
+\newcommand{\currentpoints}{% total points of current task   
+	\texorpdfstring{\ifnumequal{\totvalue{ecpoints\arabic{pppc}}}{0}%
+		{\total{points\arabic{pppc}} points}%
+		{\total{points\arabic{pppc}}+\total{ecpoints\arabic{pppc}} points}}{}%
+}
+
+\newcommand{\mixedpoints}[2]{%
+	\texorpdfstring{%
+		\addtocounter{points\arabic{pppc}}{#1}%
+		\addtocounter{ecpoints\arabic{pppc}}{#2}%
+		(#1 (+#2) points)
+	}{}%
+}
+
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+	\vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+	{\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution
+			Sketch:}} {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+		12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+	{\end{tabbing}}
+
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+% Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\For}{\mbox{\bf for }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\DownTo}{\mbox{\bf downto }}
+\newcommand{\Do}{\mbox{\bf do }}
+\newcommand{\If}{\mbox{\bf if }}
+\newcommand{\Then}{\mbox{\bf then }}
+\newcommand{\Else}{\mbox{\bf else }}
+\newcommand{\Elif}{\mbox{\bf elif }}
+\newcommand{\While}{\mbox{\bf while }}
+\newcommand{\Repeat}{\mbox{\bf repeat }}
+\newcommand{\Until}{\mbox{\bf until }}
+\newcommand{\Return}{\mbox{\bf return }}
+\newcommand{\Halt}{\mbox{\bf halt }}
+\newcommand{\Swap}{\mbox{\bf swap }}
+\newcommand{\Ex}[2]{\textrm{exchange } #1 \textrm{ with } #2}
+\newcommand{\Nil}{\mbox{\bf nil}}
+\newcommand{\In}{\mathsf{inOrder}}
+\newcommand{\Post}{\mathsf{postOrder}}
+\newcommand{\Pre}{\mathsf{preOrder}}
+\newcommand{\Root}{\mathsf{root}}
+\newcommand{\Parent}{\mathsf{parent}}
+\newcommand{\Left}{\mathsf{left}}
+\newcommand{\Right}{\mathsf{right}}
+\newcommand{\Middle}{\mathsf{middle}}
+\newcommand{\True}{\textbf{true}}
+\newcommand{\False}{\textbf{false}}
+\newcommand{\Print}{\mbox{\bf print }}
+\newcommand{\ec}{({\bf Extra Credit})}
+\newcommand{\note}{{\bf Note to Graders: }}
+\newcommand{\Rotate}{\textsc{Rotate}}
+\newcommand{\LRotate}{\textsc{LeftRotate}}
+\newcommand{\RRotate}{\textsc{RightRotate}}
+
+\newcommand{\notename}[2]{{\textcolor{red}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\sparsh}[1]{{\notename{Sparsh}{#1}}}
+
+\begin{document}
+
+\ifnum\me=0
+
+% Collaborators (on a per task basis):
+%
+% Task 1: *********** INSERT COLLABORATORS HERE *********** 
+% Task 2: *********** INSERT COLLABORATORS HERE *********** 
+% etc.
+%
+
+\fi
+
+% \handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+% 	{\today}{Name: \name{} }{Due: \due}
+% 	{Homework 2}
+
+\newproblem{Collaborators}{0 points}
+    \noindent
+Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
+\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\fi
+
+\newproblem{Run-time Analysis}{\currentpoints}
+
+For parts (a) to (c), state the worst-case time complexity and justify your answer. 
+\begin{subtasks}
+
+	\item \points{2} 
+
+\begin{code}
+    {\sc hungry}$(n)$\\
+    \> $p = 0$ \\
+    \>\For $i = 1$ \To $n$ \textbf{where} $i = i + 1$\\
+    \> \> \For $j = i$ \To $n$ \textbf{where} $j = j + 1$\\
+    \> \> \> \For $k = j$ \To $n$ \textbf{where} $k = k + 1$ \\
+    \> \> \> \> $p = p + i$\\
+    \> \Return p
+\end{code}
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{2}
+\begin{code}
+    {\sc famished}$(n)$\\
+    \> $p = 0$ \\
+    \>\For $i = 1$ \To $n$ \textbf{where} $i = i + 2$\\
+    \> \> \For $j = 1$ \To $n$ \textbf{where} $j = j * 2$\\
+    \> \> \> \For $k = 1$ \To $n$ \textbf{where} $k = k + 10$\\
+    \> \> \> \> $p = p + i$\\
+    \> \Return p
+\end{code}
+
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\newpage
+
+  \item \points{4} 
+For simplicity, assume $n$ to be a power of $2$.
+\begin{code}
+    {\sc peckish}$(n)$\\
+    \> \If $n==1$\\
+    \> \> \Return 1\\
+    \> $p = 0$ \\
+    \>\For $i = n$ \To $1$ \textbf{where} $i = i - 56 $\\
+    \> \> \For $j = 1$ \To $n$ \textbf{where} $j = j + 1$ \\
+    \> \> \> \For $k = 1$ \To $100000000$ \textbf{where} $k = k + 0.1$\\
+    \> \> \> \> $p = p + i$\\
+    \> \Return $4*${\sc peckish}$(n/2)+p$
+\end{code}
+
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\item \points{3}
+Consider the following procedure that computes $x^n$ for given $x$ and $n$.
+\begin{code}
+    {\sc exponentiation}$(x,n)$\\
+    \> $p = x$\\
+    \> \For $i=2$ \To $n$ \textbf{where} $i = i + 1$\\
+    \> \> $p = p*x$\\
+    \> \Return $p$
+\end{code}
+Write a loop invariant for the algorithm and in a few lines argue that the algorithm is correct assuming that the loop invariant property is satisfied by the algorithm.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{5}
+ Consider the following procedure that inserts a key into a sorted array. Assume that the array has enough space to accommodate the new element (the key).
+\begin{code}
+    {\sc insert}$(x,n,A)$\\
+    \> \For $i=n$ \To $1$ \textbf{where} $i=i-1$\\
+    \> \> \If $A[i] > x$\\
+    \> \> \> $A[i+1] = A[i]$\\
+    \> \> \Else\\
+    \> \> \> $A[i+1] = x$\\
+    \> \> \> \textbf{break}\\
+    \> \Return $A$
+\end{code}
+
+Write a loop invariant for the algorithm and prove its correctness using induction. Now argue very briefly that the algorithm is correct assuming that the loop invariant property is satisfied by the algorithm.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+	
+\end{subtasks}
+
+
+\newproblem{Binary Search}
+{\currentpoints}
+\noindent
+
+\emph{Luffy} just started as an intern at a \emph{Straw-Hat Shipping Company}. While wandering about, \emph{Luffy} messed around with a database, rotating a (sorted) row in a table by  $k$ elements. \emph{Luffy} in his infinite wisdom, decided to change the search module for that row instead of fixing his mistake.
+
+\begin{subtasks}    
+ 
+ \item \points{6}
+ \emph Let $A[1 : n]$ be an array representing the row, but starting at entry $A[i]$
+for some $i$, $1 \le i \le n$; i.e. $A[i] < A[i + 1] < \ldots  < A[n] < A[1] < \ldots  < A[i - 1]$. For example, if $A$ before rotating was $[1,2,3,4,5]$, after rotating by $2$ it becomes $[4,5,1,2,3]$.
+ Write pseudocode to find the index of a given key in a sorted rotated array. The rotation value $k$ should \textbf{not} be an input to your procedure. Assume that the elements in the row are unique.
+ 
+  \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+  \fi
+
+   \item \points{3}
+ State and justify the worst-case running time of the algorithm.
+  \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+  \fi
+
+  \item \ecpoints{3}
+  Does your algorithm work with duplicates? If so, please explain why. If not, how would you modify your algorithm, and would that change the running time?
+  \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+  \fi
+  
+
+\end{subtasks}
+
+ 
+\newproblem{Selection Sort}{\currentpoints}
+
+ You are a teaching assistant for the course "Not-So-Basic Algorithms". After completing the course, you have tallied up the homework, quizzes, and exam scores for everyone. The final list is sorted alphabetically using first names but not according to the cumulative scores. The "TREBLA" interface expects the final list to be sorted according to the scores, and if there are students with equal scores, they should be alphabetically sorted. One of your students provides you with the following variant of selection sort to get the job done.
+
+\begin{code}
+		{\sc Selection-Sort}$(A,n)$\\
+		\> \For $i=1$ \To $n-1$\\
+		\> \> $max=1$\\
+            \> \> $j = 2$ \\
+            \> \> \While $(j \le n-i+1 )$\\
+		\> \> \> \If $A[j]>A[max]$ \\
+		\> \> \> \> $max=j$\\
+		\> \> \> $j=j+1$ \\
+		  \> \> swap$(A[j-1],A[max])$\\
+    
+	\end{code}
+
+\begin{subtasks}
+
+ \item \points{2} [$\textbf{Nami}(78), \textbf{Robin}(78), \textbf{Sanji}(82), \textbf{Usopp}(34), \textbf{Zoro}(34) $].\\
+Trace the working of the algorithm with the above example input. For every iteration of the outer loop, clearly show the elements that will be swapped and the state of the array. Note that the input is initially alphabetically sorted.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+ 
+
+	\item \points{6} 
+	Did the algorithm give you the desired result? (Were the students who scored the same also alphabetically sorted at the end?) If yes, then explain how the algorithm maintains stability. If not, modify the pseudocode to make it stable for all inputs and explain your modifications.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\item \points{3}
+	 Perform a worst-case runtime analysis on the original algorithm and, if applicable, on the second variant.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\end{subtasks}
+
+\newproblem{Merge Sort}{\currentpoints}
+
+Recall Merge Sort, in which a list is sorted by first sorting the left and right halves, and then merging the
+two lists. We define the 3-Merge Sort algorithm, in which the input list is split into 3 equal length parts (or
+as equal as possible), each is sorted recursively, and then the three lists are merged to create a final sorted
+list.
+
+
+\begin{subtasks}
+	\item \points{5} 
+ Write pseudocode to implement the algorithm.
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{5} 
+ State and justify the worst-case running time of your algorithm,
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+	
+	
+\end{subtasks}
+
+
+
+
+
+\newproblem{Applicative Questions}{\currentpoints}
+
+\begin{subtasks}
+
+
+\item \points{6} 
+
+Write pseudocode for the following problem, given a set 
+$S$ of $n$ integers and another integer 
+$x$, determine whether S contains two elements that sum to exactly $x$. The algorithm should take $O(n\log{n})$ time in the worst case.
+	
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\end{subtasks}
+\end{document}
+
+
