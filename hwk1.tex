@@ -423,7 +423,31 @@ Therefore, we can say that $g(n) = O(f(n))$.
 	\ifnum\me<2
 \begin{solution}\\
 
-Let's start with a guess. My educated guess would be $T(n) \leq a*log n$ for all $n \geq n_0$ and both $a$ and $n_0$ are positive constants.
+Let's start with a guess. My educated guess would be $T(n) \leq a\cdot nlog n$ for all $n \geq n_0$ and both $a$ and $n_0$ are positive constants.\\
+
+Let's now try to prove it using the mathematical induction method. \\
+
+Assume true for all $m < n$. Since
+$\floor{\frac{n}{2}} \leq  n$ for all $n \geq 1$, we have:
+
+$T(n) \leq 2a \cdot (\floor{\frac{n}{2}} + 7) \cdot (log(\floor{\frac{n}{2}} + 7)) + n$\\
+
+$\leq 2a · (n/2 + 7) \cdot log((n/2) + 7) + n$\\
+
+\textbf{Let's introduce constant $b$, such that $log(n/2 +7) \leq log(n)+b$\\}
+
+$\leq 2a · (n/2 + 7) \cdot (log(n)+b) + n$\\
+
+$= (an + 14a) \cdot (log(n)+b) + n$\\
+
+$= anlog(n) + 14a \cdot log(n) + anb + 14ab + n $\\
+
+$\leq an \cdot log n$\\
+
+$T(n) = \Theta(an \cdot log n)$
+
+% $= (an\cdot log((n/2) + 7) + 14a \cdot log((n/2) + 7))  + n$\\
+
 
 
 
@@ -444,9 +468,9 @@ $T(n) = 1; ~~n = 1\\$
 
 $T(n/16) = 2T(n/256) + \log (n/16)$\\
 \\
-$T(n/4^{k}) = 2^{k+1} \cdot T(n/4^{k+2}) + \log_{16}(n) + \log_{16}(n/16) + ... + \log_{16} (n/4^{k-1}) + \log_{16} (n/4^{k})$\\
+\textbf{General term formula: }$T(n/4^{k}) = 2^{k+1} \cdot T(n/4^{k+2}) + \log_{16}(n) + \log_{16}(n/16) + ... + \log_{16} (n/4^{k-1}) + \log_{16} (n/4^{k})$\\
 
-Note that $k$ runs from $0 \to log_4 (n) - 2$
+Note that $k$ runs from $0 \to log_4 (n) - 2$; thus $T(n)$ is converging to $\Theta(n^{\frac{1}{4}})$
 
 \end{solution}
 	\fi
