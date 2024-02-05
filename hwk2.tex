@@ -7,13 +7,13 @@
 \def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
 
 % **** INSERT YOUR NAME HERE ****
-\def\name{Name}
+\def\name{Yan Konichshev}
 
 % **** INSERT YOUR NETID HERE ****
-\def\netid{NetID}
+\def\netid{yk2602}
 
 % **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
-\def\collabs{NetID1, NetID2}
+\def\collabs{N/A, N/A}
 
 
 \iffalse
@@ -237,7 +237,11 @@ For parts (a) to (c), state the worst-case time complexity and justify your answ
     \> \Return p
 \end{code}
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+The worst time complexity for these three inner for loops in $\Theta(n^3)$. This is because each subsequent level runs $n$ times inside of each of the following ones, so we need to multiply $n \times n \times n$ to find the upper bound time complexity.\\
+
+\end{solution}
 	\fi
 
  \item \points{2}
@@ -252,7 +256,13 @@ For parts (a) to (c), state the worst-case time complexity and justify your answ
 \end{code}
 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Note that we always start from $1$ and run the loop until we reach $n$. However, what matters is the step size at which we approach the value $n$, in other words how quickly are we approaching it. The outer loop does it by approaching the value $n$ by adding 2 steps every iteration, the middle loop does so by multiplying the value by 2 at all times, and finally the inner one does so by adding 10.\\
+
+Knowing this information, we can make some relevant conclusions. First of all, since we skip 2 steps every loop, the time complexity of the outer loop would be $O(n/2)$ and similarly for this inner-most loop, the time complexity would be $O(n/10)$. However the inner loop is a little tricky as we constantly divide the problem by 2, so the time complexity would be $O(log_2 (n))$. Since they are all within each other, we need to multiply them to get the tight bound, which is $\Theta(\frac{n}{2} \cdot log_2 (n) \cdot \frac{n}{10}) = \Theta(n \cdot log (n) \cdot n) = \Theta(n^2 \cdot log (n) )$, since we do not need to care about the constants.
+
+\end{solution}
 	\fi
 
 \newpage
