@@ -282,7 +282,11 @@ For simplicity, assume $n$ to be a power of $2$.
 \end{code}
 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+I DONT KNOW HOW TO SOLVE THIS ONE.
+
+\end{solution}
 	\fi
 
 \item \points{3}
@@ -296,7 +300,16 @@ Consider the following procedure that computes $x^n$ for given $x$ and $n$.
 \end{code}
 Write a loop invariant for the algorithm and in a few lines argue that the algorithm is correct assuming that the loop invariant property is satisfied by the algorithm.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Loop invariance in this case is that at the beginning of each iteration, the value of $p$ is actually $x^{i-1}$. It could be easily shown inductively. \\
+
+Let's take i = 2, which is the base case. The value of $p = x$, which could also be represented in the following way: $p = x^{2-1} = x^{1} = x$. So the base case holds. \\
+
+Similarly, loop holds for the $i-th$ iteration. When the loop terminates, $i=n+1$, the loop invariant still holds true. Then, $p$ will be the result of $x^{n+1 - 1} = x^{n}$. Thus, the algorithm is proved to be correct.\\
+
+
+\end{solution}
 	\fi
 
  \item \points{5}
@@ -314,7 +327,9 @@ Write a loop invariant for the algorithm and in a few lines argue that the algor
 
 Write a loop invariant for the algorithm and prove its correctness using induction. Now argue very briefly that the algorithm is correct assuming that the loop invariant property is satisfied by the algorithm.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution} \\  
+I DONT KNOW HOW TO SOLVE THIS ONE.   
+\end{solution}
 	\fi
 	
 \end{subtasks}
