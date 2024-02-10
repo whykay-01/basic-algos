@@ -284,7 +284,8 @@ For simplicity, assume $n$ to be a power of $2$.
 	\ifnum\me<2
 \begin{solution}\\
 
-I DONT KNOW HOW TO SOLVE THIS ONE.
+This algorithm is called recursively on the input of size $n$ 4 times (dividing it by 2 every call), and adding a constant of $p$, which ends up being run $\frac{n}{56}$ times for the outer loop, $n$ more times for the inner loop, and a constant of $1,000,000,000$ times for the inner-most loop. Thus, the total time complexity would be described by the following recurrence relation: $T(n) = T(n/2) + n^2$ (where $n^2$ represents $p$). Using the expansion method one could get a time bound of $O(n^2)$.
+%$\Theta(\frac{n}{56} \cdot n \cdot 1000000000 \cdot 4log_2 n) = \Theta(n^2 \cdot log_2 n)$%
 
 \end{solution}
 	\fi
@@ -320,15 +321,25 @@ Similarly, loop holds for the $i-th$ iteration. When the loop terminates, $i=n+1
     \> \> \If $A[i] > x$\\
     \> \> \> $A[i+1] = A[i]$\\
     \> \> \Else\\
-    \> \> \> $A[i+1] = x$\\
     \> \> \> \textbf{break}\\
+    \> $A[i+1] = x$\\
     \> \Return $A$
 \end{code}
 
 Write a loop invariant for the algorithm and prove its correctness using induction. Now argue very briefly that the algorithm is correct assuming that the loop invariant property is satisfied by the algorithm.
 	\ifnum\me<2
 \begin{solution} \\  
-I DONT KNOW HOW TO SOLVE THIS ONE.   
+
+Step 1: Loop invariance: elements in the sub-array $A[i+1, ..., n]$ are always greater than $x$, and are \textbf{sorted}.\\
+
+Step 2: Inductive proof:\\
+At the first step, when $i = n$, we have empty array $A[i+1, ..., n]$, thus the condition holds.\\
+
+There are two different cases we should consider for the general step. The first one is when we have the $A[i] > x$ then we need to "shift" all the elements to the right (keeping the relative \textbf{sorted order} of the elements). This happens until we find the case (2) where the $A[i]$ is equal or smaller than $x$. That's when we break out of the loop and assign our $x$ to it's assigned position. Note that the order of the elements in either case remains sorted and $x$ will eventually end up in the desired spot. Thus, general step holds true.\\
+
+Finally, the loop is terminated whenever we have $i=1$, or $x$ being in the new spot in between of the element LSE to x on the left and strictly greater than on the right. The latter condition is already proven to be correct by utilizing the induction step above, and the first case of $x$ being inserted into the position 1 means that $x$ happened to be the smallest element in the entire array, thus it would be pasted into the first position while having all the rest of the elements shifted by one to the right. Thus, invariance holds true by induction proving the correctness of the algorithm. 
+
+
 \end{solution}
 	\fi
 	
