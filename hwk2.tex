@@ -218,7 +218,11 @@ It is not recommended to change any other parts of the code.
     \noindent
 Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+I have consulted lecture and recitation materials for this homework. Additionally, I have looked up some classical algorithms and their time complexities on the web with the explanations of why do we need them.
+
+\end{solution}
 \fi
 
 \newproblem{Run-time Analysis}{\currentpoints}
@@ -369,7 +373,8 @@ Just to avoid confusion, I wrote an actual python code, thus the difference in i
 
 \begin{lstlisting}[language=Python]
 def findIndexRotatedArray(Array, element):
-  # perform a binary search to find an actual starting index in the rotating array (aka smallest element and it's index)
+  # perform a binary search to find an actual starting 
+  #index in the rotating array (aka smallest element and it's index)
   start, end = 0, len(Array) - 1
   while start < end: 
       mid = (start + end) // 2
@@ -378,11 +383,13 @@ def findIndexRotatedArray(Array, element):
       else:
           end = mid
           
-  # need to find the reference point to use for the manipulations with the rotated array (if it is rotated)
+  # need to find the reference point to use for the
+  # manipulations with the rotated array (if it is rotated)
   
   reference_point = start
 
-  # perform binary search with accounts to what the reference pivot is
+  # perform binary search with accounts to what 
+  # the reference pivot is
   start, end = 0, len(Array)
   
   while start < end:
@@ -417,9 +424,9 @@ The worst case complexity is $O(2log_2 n) = O(log n)$. This is because there is 
   \ifnum\me<2
 \begin{solution}\\
 
-HAVENT FINISHED YET!!
+HAVEN'T FINISHED YET!!
 
-My algorithm would work with the duplicates only in certain cases and it would return the first occurrence of the element we are searching for. Additionally, it would be challenging to maintain this for all potential user-cases, because we are kind of binded to the reference_point, which serves as a pivot. If we have duplicated values in the array, the values sometimes 
+My algorithm would work with the duplicates only in certain cases and it would return the first occurrence of the element we are searching for. Additionally, it would be challenging to maintain this for all potential user-cases, because we are kind of binded to the reference point, which serves as a pivot. If we have duplicated values in the array, the values sometimes 
 
 \end{solution}
   \fi
@@ -450,7 +457,11 @@ My algorithm would work with the duplicates only in certain cases and it would r
  \item \points{2} [$\textbf{Nami}(78), \textbf{Robin}(78), \textbf{Sanji}(82), \textbf{Usopp}(34), \textbf{Zoro}(34) $].\\
 Trace the working of the algorithm with the above example input. For every iteration of the outer loop, clearly show the elements that will be swapped and the state of the array. Note that the input is initially alphabetically sorted.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+DIDNT SOLVE THIS ONE YET.
+
+\end{solution}
 	\fi
  
 
@@ -480,7 +491,50 @@ list.
 	\item \points{5} 
  Write pseudocode to implement the algorithm.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}   
+\begin{lstlisting}[language=Python, caption=Three-way Merge Sort Algorithm]
+
+def merging(arr1, arr2): 
+    i, j, k = 1, 1, 1
+    a, b = len(arr1), len(arr2)
+    c = a + b
+    arr3 = [None * c]
+    
+    while i <= a and j <= b:
+        if arr1[i] <= arr2[j]:
+            arr3[k] = arr1[i] 
+            i += 1
+        else:
+            arr3[k] = arr2[j] 
+            j += 1
+        
+        k += 1
+    
+    while i <= a:
+        arr3[k] = arr1[i] 
+        i += 1
+        k += 1
+
+    while j <= b:
+        arr3[k] = arr2[j] 
+        j += 1 
+        k += 1
+    
+    return arr3
+
+def merge_sort(arr, l, r):
+    # arg1: arr: Array of integers
+    # arg2 and arg3: l and r, such that A[l, ..., r]
+    if l < r: 
+        q = (l+r) // 3
+        merge_sort(arr, l, q)
+        merge_sort(arr, q+1, 2q)
+        merge_sort(arr, 2q+1, r)
+        merging(arr1, arr2)
+
+\end{lstlisting}
+
+\end{solution}
 	\fi
 
  \item \points{5} 
@@ -508,7 +562,37 @@ $S$ of $n$ integers and another integer
 $x$, determine whether S contains two elements that sum to exactly $x$. The algorithm should take $O(n\log{n})$ time in the worst case.
 	
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Let's work on this from the perspective of sorting an array using MergeSort and then iteratively figuring out whether the array does have matching pair or not. Since MergeSort performs $O(nlog n)$ regardless of the input and the linear search is of linear time, I can conclude that the algorithm should take $O(n\log{n})$ time in the worst case.
+
+\begin{lstlisting}[language=Python]
+
+    twoSum(S, x):
+
+        start = 1
+        end = n
+        # Assume the regular MergeSort Algo as mentioned
+        # During the lectures 
+        S = MergeSort(S)
+
+        while(start < end):
+        
+            if S[start]+S[end]==target: 
+                return True
+                
+            elif S[start]+S[end]>target:
+                end -= 1
+                
+            else:
+                start += 1
+        
+        return False
+
+\end{lstlisting}
+
+
+\end{solution}
 	\fi
 
 \end{subtasks}
