@@ -45,6 +45,7 @@ It is not recommended to change any other parts of the code.
 \usepackage{enumitem}
 \usepackage{hyperref}
 \usepackage{mathtools}
+\usepackage{listings}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
@@ -360,19 +361,67 @@ for some $i$, $1 \le i \le n$; i.e. $A[i] < A[i + 1] < \ldots  < A[n] < A[1] < \
  Write pseudocode to find the index of a given key in a sorted rotated array. The rotation value $k$ should \textbf{not} be an input to your procedure. Assume that the elements in the row are unique.
  
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Brief explanation of my course of actions. We know that the array is sorted at all times, the main problem here is to identify where to start and where to stop. We can use the modulo operator to figure out the rotating array.
+
+Just to avoid confusion, I wrote an actual python code, thus the difference in indexing notation.
+
+\begin{lstlisting}[language=Python]
+def findIndexRotatedArray(Array, element):
+  # perform a binary search to find an actual starting index in the rotating array (aka smallest element and it's index)
+  start, end = 0, len(Array) - 1
+  while start < end: 
+      mid = (start + end) // 2
+      if Array[mid] > Array[end]:
+          start += 1
+      else:
+          end = mid
+          
+  # need to find the reference point to use for the manipulations with the rotated array (if it is rotated)
+  
+  reference_point = start
+
+  # perform binary search with accounts to what the reference pivot is
+  start, end = 0, len(Array)
+  
+  while start < end:
+      mid = (start + end) // 2
+      middle_point = ((mid + reference_point - 1) % (len(Array) -1)) + 1
+      
+      if Array[middle_point] == element:
+          return middle_point
+      elif Array[middle_point] < element:
+          start += 1
+      else: 
+          high = mid
+  
+  return None
+\end{lstlisting}
+
+\end{solution}
   \fi
 
    \item \points{3}
  State and justify the worst-case running time of the algorithm.
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+The worst case complexity is $O(2log_2 n) = O(log n)$. This is because there is just a mathematical manipulation with finding the leverage point and utilizing it to get an actual "picture" of what the array before the rotation looked like.
+
+\end{solution}
   \fi
 
   \item \ecpoints{3}
   Does your algorithm work with duplicates? If so, please explain why. If not, how would you modify your algorithm, and would that change the running time?
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+HAVENT FINISHED YET!!
+
+My algorithm would work with the duplicates only in certain cases and it would return the first occurrence of the element we are searching for. Additionally, it would be challenging to maintain this for all potential user-cases, because we are kind of binded to the reference_point, which serves as a pivot. If we have duplicated values in the array, the values sometimes 
+
+\end{solution}
   \fi
   
 
