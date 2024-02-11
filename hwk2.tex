@@ -424,9 +424,7 @@ The worst case complexity is $O(2log_2 n) = O(log n)$. This is because there is 
   \ifnum\me<2
 \begin{solution}\\
 
-HAVEN'T FINISHED YET!!
-
-My algorithm would work with the duplicates only in certain cases and it would return the first occurrence of the element we are searching for. Additionally, it would be challenging to maintain this for all potential user-cases, because we are kind of binded to the reference point, which serves as a pivot. If we have duplicated values in the array, the values sometimes 
+My algorithm would work with the duplicates only in certain cases and it would return the first occurrence of the element we are searching for. Additionally, it would be challenging to maintain this for all potential user-cases, because we are kind of binded to the reference point, which serves as a pivot. If we have too many duplicated values in the array, it could become troublesome to identify the actual reference point for the actual start of the array. Thus, the algorithm \textbf{will actually fail}. If I were to modify it, it would be a modification towards the linear search, which takes $O(n)$ time.
 
 \end{solution}
   \fi
@@ -459,7 +457,28 @@ Trace the working of the algorithm with the above example input. For every itera
 	\ifnum\me<2
 \begin{solution}\\
 
-DIDNT SOLVE THIS ONE YET.
+Before the iterations, we have a similar array to the one given above.\\
+
+Iteration 1: $i = 1$\\
+Swap (S, 82) with (Z, 34)\\
+Array becomes like this:
+[$\textbf{Nami}(78), \textbf{Robin}(78),\textbf{Zoro}(34), \textbf{Usopp}(34),  \textbf{Sanji}(82) $]\\
+
+Iteration 2: $i = 2$\\
+Swap (N, 78) with (U, 34)\\
+Array becomes like this:
+[$ \textbf{Usopp}(34), \textbf{Robin}(78), \textbf{Zoro}(34),  \textbf{Nami}(78), \textbf{Sanji}(82) $]\\
+
+Iteration 3: $i = 3$\\
+Swap (R, 78) with (Z, 34)
+Array becomes like this:
+[$ \textbf{Usopp}(34),  \textbf{Zoro}(34),  \textbf{Robin}(78), \textbf{Nami}(78), \textbf{Sanji}(82) $]\\
+
+
+Iteration 4: $i = 4$\\
+Swap (U, 34) with (U, 34)
+Array stays sorted, since it was finally sorted in the previous iteration. 
+
 
 \end{solution}
 	\fi
@@ -468,13 +487,22 @@ DIDNT SOLVE THIS ONE YET.
 	\item \points{6} 
 	Did the algorithm give you the desired result? (Were the students who scored the same also alphabetically sorted at the end?) If yes, then explain how the algorithm maintains stability. If not, modify the pseudocode to make it stable for all inputs and explain your modifications.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+No, the algo failed to provide us with the desired outcome. As one might have noticed, Robin(78), Nami(78) elements \textbf{are not} stored in the alphabetical order. I think one way to fix this would be changing the sign from strictly greater than in the if conditional to GEQ $\geq$ sign. As we would be moving the latest element (the one further down in the alphabetical order) to the right most side of the array, thus maintaining the relative order of the execution.
+
+\end{solution}
 	\fi
 
 \item \points{3}
 	 Perform a worst-case runtime analysis on the original algorithm and, if applicable, on the second variant.
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+The worst time complexity for the array could expressed in the number of operations performed. The outer loop continiously does $n-1$ operations, but the inner one is doing $n-i+1$ number of operations. Thus the big O of this algorithm would be $O(n^2)$
+
+
+\end{solution}
 	\fi
 
 \end{subtasks}
@@ -494,33 +522,41 @@ list.
 \begin{solution}   
 \begin{lstlisting}[language=Python, caption=Three-way Merge Sort Algorithm]
 
-def merging(arr1, arr2): 
-    i, j, k = 1, 1, 1
-    a, b = len(arr1), len(arr2)
-    c = a + b
-    arr3 = [None * c]
+def merging(arr1, arr2, arr3): 
+    i, j, k, l = 1, 1, 1, 1
+    a, b, c = len(arr1), len(arr2), len(arr3)
+    d = a + b + c + d
+    out = [None * d]
     
-    while i <= a and j <= b:
-        if arr1[i] <= arr2[j]:
-            arr3[k] = arr1[i] 
+    while i <= a and j <= b and k < c:
+        if arr1[i] <= arr2[j] and arr1[i] <= arr3[k]:
+            out[l] = arr1[i] 
             i += 1
-        else:
-            arr3[k] = arr2[j] 
+        elif arr1[i] >= arr2[j] and arr2[j] <= arr3[k]:
+            out[l] = arr2[j] 
             j += 1
+        else:
+            out[l] = arr3[k]
+            k += 1
         
-        k += 1
+        l += 1
     
     while i <= a:
-        arr3[k] = arr1[i] 
+        out[l] = arr1[i] 
         i += 1
-        k += 1
+        l += 1
 
     while j <= b:
-        arr3[k] = arr2[j] 
+        out[l] = arr2[j] 
         j += 1 
-        k += 1
+        l += 1
+
+    while k <= c:
+        out[l] = arr3[k] 
+        k += 1 
+        l += 1
     
-    return arr3
+    return out
 
 def merge_sort(arr, l, r):
     # arg1: arr: Array of integers
@@ -530,7 +566,7 @@ def merge_sort(arr, l, r):
         merge_sort(arr, l, q)
         merge_sort(arr, q+1, 2q)
         merge_sort(arr, 2q+1, r)
-        merging(arr1, arr2)
+        return merging(arr[1:q], arr[q:2q], arr[2q:r])
 
 \end{lstlisting}
 
@@ -540,7 +576,11 @@ def merge_sort(arr, l, r):
  \item \points{5} 
  State and justify the worst-case running time of your algorithm,
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+Like any other MergeSort algorithm, this one would constantly perform $\Theta(nlog n)$, but since we have the split by 3 and then merging of it it would be $\Theta(nlog_3 n) = \Theta(nlog n)$
+
+\end{solution}
 	\fi
 	
 	
