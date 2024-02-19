@@ -1,0 +1,392 @@
+% me=0 student solutions (ps file), me=1 - my solutions (sol file),
+% me=2 - assignment (hw file)
+\def\me{0} \def\num{3} %homework number
+
+\def\due{11:55 pm on Thursday, February 22} %due date
+
+\def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
+
+% **** INSERT YOUR NAME HERE ****
+\def\name{Name}
+
+% **** INSERT YOUR NETID HERE ****
+\def\netid{NetID}
+
+% **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
+\def\collabs{NetID1, NetID2}
+
+
+\iffalse
+
+INSTRUCTIONS: replace # by the homework number.  (if this is not
+ps#.tex, use the right file name)
+
+Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate LaTeX code.  There is a section below for student macros.
+It is not recommended to change any other parts of the code.
+
+
+\fi
+%
+
+\documentclass[11pt]{article}
+
+
+% ==== Packages ====
+\usepackage{amsfonts,amsmath}
+\usepackage{latexsym}
+\usepackage{etoolbox}
+\usepackage{totcount}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\footskip}{1in} \setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+	\renewcommand{\thepage}{#1, Page \arabic{page}}
+	\noindent
+	\begin{center}
+		\framebox{ \vbox{ \hbox to 5.78in { {\bf \course} \hfill #2 }
+				\vspace{4mm} \hbox to 5.78in { {\Large \hfill #5 \hfill} }
+				\vspace{2mm} \hbox to 5.78in { {\it #3 \hfill #4} }
+				\ifnum\me=0
+				\vspace{2mm} \hbox to 5.78in { {\it Collaborators: \collabs
+						\hfill} }
+				\fi
+		} }
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcounter{pppc}
+\newcommand{\prob}{\arabic{pppp}} %problem number
+\newcommand{\increase}{\stepcounter{pppp}\stepcounter{pppc}} %problem number
+
+% Arguments: Title, Number of Points
+\newcommand{\newproblem}[2]{
+	\increase
+	\restartlist{subtasks}
+	\ifnum\me=0
+	\ifnum\prob>0 \newpage \fi
+	\setcounter{page}{1}
+	\handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+	{\today}{Name: \name{} (\netid)}{Due: \due}
+	{Solutions to Problem \prob\ of Homework \num\ (#2)}
+	\else
+	\section*{Problem \num-\prob~(#1) \hfill {#2}}
+	\fi
+}
+
+\newlist{subtasks}{enumerate}{1}
+\setlist[subtasks]{label={(\alph*)},resume}
+
+\newcounter{numpppp}
+\loop
+\stepcounter{numpppp}
+% workaround bug in totcount (means \newtotcounter{points\arabic{pointsct}})
+\begingroup%
+\edef\tempcounter@@name{points\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\edef\tempcounter@@name{ecpoints\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\endgroup
+\ifnum \value{numpppp}<500 % max number of tasks supported
+\repeat
+
+% formating of output
+\newcommand{\disppoints}[1]{%
+	\texorpdfstring{(#1~\ifnumequal{#1}{1}{point}{points})}{}
+}
+
+% adds and displays
+\newcommand{\points}[1]{%
+	\texorpdfstring{\addtocounter{points\arabic{pppc}}{#1}\disppoints{#1}}{}%
+}
+\newcommand{\ecpoints}[1]{%
+	\texorpdfstring{\addtocounter{ecpoints\arabic{pppc}}{#1}\ec \disppoints{#1}}{}%
+}
+
+% total points of current task         
+\newcommand{\currentpoints}{% total points of current task   
+	\texorpdfstring{\ifnumequal{\totvalue{ecpoints\arabic{pppc}}}{0}%
+		{\total{points\arabic{pppc}} points}%
+		{\total{points\arabic{pppc}}+\total{ecpoints\arabic{pppc}} points}}{}%
+}
+
+\newcommand{\mixedpoints}[2]{%
+	\texorpdfstring{%
+		\addtocounter{points\arabic{pppc}}{#1}%
+		\addtocounter{ecpoints\arabic{pppc}}{#2}%
+		(#1 (+#2) points)
+	}{}%
+}
+
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+	\vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+	{\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution
+			Sketch:}} {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+		12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+	{\end{tabbing}}
+
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+% Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\For}{\mbox{\bf for }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\DownTo}{\mbox{\bf downto }}
+\newcommand{\Do}{\mbox{\bf do }}
+\newcommand{\If}{\mbox{\bf if }}
+\newcommand{\Then}{\mbox{\bf then }}
+\newcommand{\Else}{\mbox{\bf else }}
+\newcommand{\Elif}{\mbox{\bf elif }}
+\newcommand{\While}{\mbox{\bf while }}
+\newcommand{\Repeat}{\mbox{\bf repeat }}
+\newcommand{\Until}{\mbox{\bf until }}
+\newcommand{\Return}{\mbox{\bf return }}
+\newcommand{\Halt}{\mbox{\bf halt }}
+\newcommand{\Swap}{\mbox{\bf swap }}
+\newcommand{\Ex}[2]{\textrm{exchange } #1 \textrm{ with } #2}
+\newcommand{\Nil}{\mbox{\bf nil}}
+\newcommand{\In}{\mathsf{inOrder}}
+\newcommand{\Post}{\mathsf{postOrder}}
+\newcommand{\Pre}{\mathsf{preOrder}}
+\newcommand{\Root}{\mathsf{root}}
+\newcommand{\Parent}{\mathsf{parent}}
+\newcommand{\Left}{\mathsf{left}}
+\newcommand{\Right}{\mathsf{right}}
+\newcommand{\Middle}{\mathsf{middle}}
+\newcommand{\True}{\textbf{true}}
+\newcommand{\False}{\textbf{false}}
+\newcommand{\Print}{\mbox{\bf print }}
+\newcommand{\ec}{({\bf Extra Credit})}
+\newcommand{\note}{{\bf Note to Graders: }}
+\newcommand{\Rotate}{\textsc{Rotate}}
+\newcommand{\LRotate}{\textsc{LeftRotate}}
+\newcommand{\RRotate}{\textsc{RightRotate}}
+
+\newcommand{\notename}[2]{{\textcolor{red}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\sparsh}[1]{{\notename{Sparsh}{#1}}}
+
+\newcommand{\noname}[2]{{\textcolor{purple}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\tanmay}[1]{{\noname{Tanmay}{#1}}}
+
+\begin{document}
+
+\ifnum\me=0
+
+% Collaborators (on a per task basis):
+%
+% Task 1: *********** INSERT COLLABORATORS HERE *********** 
+% Task 2: *********** INSERT COLLABORATORS HERE *********** 
+% etc.
+%
+
+\fi
+
+% \handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+% 	{\today}{Name: \name{} }{Due: \due}
+% 	{Homework 3}
+
+\newproblem{Collaborators}{0 points}
+    \noindent
+Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
+\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\fi
+
+\newproblem{Spiderman}{\currentpoints}
+
+
+\noindent
+
+
+The version of quicksort we saw in class does not optimize for duplicates. It includes duplicates of the pivot element in further recursive calls.
+For this task, you are to develop a new partitioning procedure that accommodates duplicates. The idea is
+to partition the array into elements less than the pivot, equal to the
+pivot and greater than the pivot.
+
+\begin{subtasks}
+
+	\item \points{6} Use the idea to develop an in-place (uses constant space per recursive call) partitioning algorithm, providing pseudocode.
+ 
+ \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{3}
+        Utilize the partitioning algorithm to create a sorting algorithm. State and justify the worst-case running time.
+  \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+  \item \points{2} 
+Give an array that runs in time $\Theta(n^2)$ for the quicksort from class and $\Theta(n)$ for your algorithm. Why is that the case?
+  \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+\end{subtasks}
+ 
+\newproblem{Radix}{\currentpoints}
+
+Consider an array $A[1, \ldots, t]$ containing $t$ numbers, where each number may have a different number of decimal digits. The total sum of all the digits of all elements is $n$. Additionally, the time required to find the number of digits of an element $A[k]$ is $O(i)$ where $i$ is the number of digits of the element. Given such an array, we wish to sort the numbers.
+
+\begin{subtasks}
+
+\item \points{3} 
+ Think of a naive solution where we pad all the number with leading zeros to make all elements have the same number of digits as the the longest-digit number. We then run one iteration of {\sc RadixSort} on the resulting $t$
+	numbers. Write the run-time of the naive algorithm as the function of
+	$t,n$ and $L$, where $L\le n$ is the length of the longest integer in
+	$A$. Specifically, what is the time of this naive algorithm when
+	$t=n/2+1$, and one element has $n/2$ digits, while the remaining $n/2$
+	elements have $1$ digit each. An example array of the worst case is $[1, 98765 , 4, 3, 5, 2]$.
+	
+ \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{6}
+Give an algorithm that uses {\sc RadixSort} in a clever manner and works in worse-case time $\theta(n)$.
+ \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+  \item \points{3}
+State loop invariant(s) for your algorithm and assuming that they are true argue why your algorithm works.
+ \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+
+ \item \points{3}
+\textbf{Properly} justify the running time of your algorithm.
+ \ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+ 
+	
+
+
+\end{subtasks}
+
+\newproblem{The $k$ Largest Elements}{\currentpoints}
+
+
+Consider a data structure $D$ that maintains the $k$ ($k \leq n$) largest elements of an array $A = A[1,\ldots,n]$. We can implement $D$ using one of the following data structures: 
+
+\begin{enumerate}[label=\Roman*.]   
+\item  Unsorted array of size $k$
+\item  A sorted array of size $k$
+\item  Min-heap of size $k$
+\end{enumerate}
+
+
+We want the data structure to be able to facilitate
+
+\begin{itemize}
+	
+	\item {\sc Initialize}($A,n,k$) that initializes $D$ for a
+	given array $A$ of $n$ elements.
+	
+	\item {\sc Largest}($D$), that returns the $k$ largest elements of
+	$A$ {\em in sorted order}.
+	
+	\item {\sc Update}($D, x$), that updates $D$ when an element $x$ is
+	appended to the array $A$.
+	
+\end{itemize}
+
+\textbf{Note:} We do \textbf{NOT} want psuedocode for this question! You have a describe your algorithm stepwise and explain your steps.
+
+\begin{subtasks}
+	
+	\item \mixedpoints{6}{2}
+For all the data structures, show how the {\sc Initialize} procedure can be implemented to run in  \textbf{expected} time $O(n+k\log n)$. For extra credit, give an implementation that runs in $O(n+k\log n)$ time for the \textbf{worst case}.
+ 
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+	
+	\item \points{6} 
+ For all the data structures, state and show how the {\sc Largest} procedure can be implemented to run in best time you can think of.
+	
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+	
+	\item \points{6}
+ For all the data structures, state and show how the {\sc Update} procedure can be implemented to run in best time you can think of.
+	
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+ 
+\end{subtasks}
+
+\newproblem{Applicative Questions}{\currentpoints}
+
+\begin{subtasks}
+
+\item \points{5}
+Assume that we are given $n$ bolts and $n$ nuts of different sizes, where each bolt exactly matches one nut. Our goal is to find
+the matching nut for each bolt. The nuts and bolts are too similar to compare directly; however,
+we can test whether any nut is too big, too small, or the same size as any bolt. Prove that in the worst case, $\Omega(n \log n)$ nut-bolt tests are required to correctly match up the nuts and bolts.
+\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+ \item \points{5}
+Let $S = \{e_1, e_2, \ldots, e_n\}$ be a set of $n$ distinct integers in a range large enough to mean that radix sort does not run in linear time. We aim to give an expected $O(n)$ time algorithm to report all pairs $(e, f)$ of integers in $S$ such that $e = 5f$.
+\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+
+
+\item \ecpoints{5} 
+ Suppose you are given an array $A[1 : n]$ of integers in the range $[1, m]$, where $m > n$. Additionally an uninitialized array $B[1:m]$ (don't assume anything about the values in B initially) is also available to you. 
+
+ Show how to identify all duplicate
+items in A in wosrt-case time $O(n)$ (the first instance of an item in increasing i index order is a nonduplicate, the others are duplicates). You can report a duplicate item as the pair $(A[i], i)$. You will need to use array B to help.
+
+
+
+	\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+	\fi
+
+
+\end{subtasks}
+\end{document}
+
+
