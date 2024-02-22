@@ -7,13 +7,13 @@
 \def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
 
 % **** INSERT YOUR NAME HERE ****
-\def\name{Name}
+\def\name{Yan Konichshev}
 
 % **** INSERT YOUR NETID HERE ****
-\def\netid{NetID}
+\def\netid{yk2602}
 
 % **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
-\def\collabs{NetID1, NetID2}
+\def\collabs{N/A, N/A}
 
 
 \iffalse
@@ -46,6 +46,7 @@ It is not recommended to change any other parts of the code.
 \usepackage{hyperref}
 \usepackage{mathtools}
 \usepackage{graphicx}
+\usepackage{listings}
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
@@ -240,19 +241,61 @@ pivot and greater than the pivot.
 	\item \points{6} Use the idea to develop an in-place (uses constant space per recursive call) partitioning algorithm, providing pseudocode.
  
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+DIDN'T FINISH THIS ONE YET!!\\
+
+\begin{lstlisting}[language=Python, caption=Partitioning for the three-way quicksort algorithm]
+
+def three_way_partition(A, pivot, lo, hi):
+    l ← lo
+    r ← lo
+    u ← hi
+
+    while r ≤ u:
+        if A[r] < pivot:
+            swap A[l] and A[r]
+            l ← l + 1
+            r ← r + 1
+        else if A[r] > pivot:
+            swap A[r] and A[u]
+            u ← u - 1
+        else: // the element is equal to pivot
+            r ← r + 1
+    return l, r
+
+\end{lstlisting}
+
+
+\end{solution}
 	\fi
 
  \item \points{3}
         Utilize the partitioning algorithm to create a sorting algorithm. State and justify the worst-case running time.
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution} \\
+
+DIDN'T FINISH THIS ONE YET!!\\
+
+\begin{lstlisting}[language=Python, caption=Modified Quicksort algortithm]
+
+def modified_quicksort():
+    pass
+
+
+\end{lstlisting}
+
+
+\end{solution}
 	\fi
 
   \item \points{2} 
 Give an array that runs in time $\Theta(n^2)$ for the quicksort from class and $\Theta(n)$ for your algorithm. Why is that the case?
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution} \\
+
+PROB ANY ARRAY WITH A NUMBER OF DUPLICATE VALUES WOULD BE SUFFICIENT FOR THIS.
+
+\end{solution}
 	\fi
 
 \end{subtasks}
@@ -272,26 +315,48 @@ Consider an array $A[1, \ldots, t]$ containing $t$ numbers, where each number ma
 	elements have $1$ digit each. An example array of the worst case is $[1, 98765 , 4, 3, 5, 2]$.
 	
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+    Time complexity = $\Theta(n^2)$\\
+    
+    $\Theta(L*(t + 10)) = \Theta(t*L + 10L)$\\
+    
+    Note that $t = n/2 + 1$ and $L = n/2$, thus\\
+    
+    Time complexity = $\Theta((n/2 + 1) * (n/2) + 10 * (n/2)) = \Theta(n^2)$\\
+\end{solution}
 	\fi
 
  \item \points{6}
 Give an algorithm that uses {\sc RadixSort} in a clever manner and works in worse-case time $\theta(n)$.
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+HAVENT DONE THIS.
+
+Sorting it by the number of digits into bins, where every single bin would be only the (the number of digits of an element A[k] is O(i))
+
+\end{solution}
 	\fi
 
   \item \points{3}
 State loop invariant(s) for your algorithm and assuming that they are true argue why your algorithm works.
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+DONT HAVE TO PROVE THE LOOP IN-VARIANCE
+
+\end{solution}
 	\fi
 
 
  \item \points{3}
 \textbf{Properly} justify the running time of your algorithm.
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+DONT NEED TO PROVE ANYTHING
+
+\end{solution}
 	\fi
  
 	
