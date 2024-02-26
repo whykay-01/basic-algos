@@ -416,9 +416,11 @@ For all the data structures, show how the {\sc Initialize} procedure can be impl
 \begin{enumerate}[label=\Roman*.]   
 \item  \textbf{Unsorted array of size} $k$\\
 
-Find the $k$-th largest element using the algorithm covered during the lecture, called QuickSelect, which allows us to pick a i-th rank number of the array in linear $O(n)$ time. After such element is found, we could partition around that element and FINISH THIS \\
+Find the $k-th$ largest element using the algorithm covered during the lecture, called QuickSelect, which allows us to pick a $i-th$ rank number of the array in linear $O(n)$ time. Additionally, it is worth mentioning that all the elements that are greater than $k-th$ element would be on the right-hand side of that very element. After such pivot element is found, we could partition around that element and copy paste all the k largest elements into the newly initialized array D, which would take $O(k)$ running time. Final time complexity would be $O(n+k)$.\\
 
 \item  \textbf{A sorted array of size} $k$\\
+
+
 
 
 \item  \textbf{Min-heap of size} $k$\\
