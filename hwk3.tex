@@ -344,9 +344,35 @@ Give an algorithm that uses {\sc RadixSort} in a clever manner and works in wors
  \ifnum\me<2
 \begin{solution}\\
 
-HAVENT FINISHED THIS YET
+The idea is in sorting the array by the number of digits into bins, where every single bin would be only the (the number of digits of an element A[k] is O(i)). And then performing radix sort in each individual category.
 
-1. The idea is in sorting the array by the number of digits into bins, where every single bin would be only the (the number of digits of an element A[k] is O(i)). And then performing radix sort in each individual category.
+\begin{lstlisting}[language=Python, caption=Clever RadixSort]
+
+def radix_sort_clever(Array):
+    """
+    L = max digit len of the array A
+    n = total sum of all the digits of all elements
+    bins = 2D array
+    """
+    bins = [1, ....., L]
+
+    for number in A:
+        # spread all the numbers in the respective bins
+        num_digits = number_of_digits(number)
+        bins[num_digits] = number
+
+    result = []
+
+    for bin in bins:
+        sorted_bin = classic_radix_sort(bin)
+        for i in range(len(sorted_bin)):
+            result.append(sorted_bin[i])
+
+    # this is going to be a sorted array of A
+    return result
+        
+
+\end{lstlisting}
 
 \end{solution}
 	\fi
@@ -356,7 +382,11 @@ State loop invariant(s) for your algorithm and assuming that they are true argue
  \ifnum\me<2
 \begin{solution}\\
 
-DONT HAVE TO PROVE THE LOOP IN-VARIANCE
+There are three different loop in-variants here. The first one is occurring at the stage 1, when we are grouping elements into the bins. The loop invariance at stage 1 is that an element is always ending up in the bin at index of the number of digits in that elements. And that the i-th index of the array bins will always contain elements with i number of digits.
+
+The second phase where we are individually sorting each bin using the $classic_radix_sort$ algorithm has its own loop invariance. The loop invariant here is simply that at any given loop i we have the i-th digit of that very bin sorted as well as all the previous digits before the i-th digit are sorted as well. 
+
+The last invariance is coming at the inner loop, where we are appending all the values in bins to the final output result array. The invariance here is simply that all the numbers we append to the result array are already sorted in ascending order, so we append it to the final array with the result.
 
 \end{solution}
 	\fi
@@ -367,7 +397,13 @@ DONT HAVE TO PROVE THE LOOP IN-VARIANCE
  \ifnum\me<2
 \begin{solution}\\
 
-DONT NEED TO PROVE ANYTHING
+We are using $n$ to represent the total sum of all the digits of all elements in the array A. Thus, we would be computing the total n in the first loop, which is happening because we go over the number and calculate the number of digits in it. Thus, we would end up having O(n) time for the first loop.
+
+Radix sort that we would have runs in O(n) as well, cause we would have at most L number of bins in the $bins$ 2D array. 
+
+And the very last loop is essentially the anti-action of what we did in the first loop, which also results in O(n) time, cause we go over the numbers in sorted bins and simply append them all.
+
+Thus, final complexity would be $3\cdot O(n) = O(n)$
 
 \end{solution}
 	\fi
@@ -420,11 +456,12 @@ Find the $k-th$ largest element using the algorithm covered during the lecture, 
 
 \item  \textbf{A sorted array of size} $k$\\
 
-
+We need to perform the $k-th$ largest element using the QuickSelect algorithm, which allows us to pick a $i-th$ rank number of the array in linear $O(n)$ time. After that we want to copy all these elements that are greater than the k-th largest element into the D, which once again takes $O(k)$ time. After that we need to sort D array using MergeSort, which would take $O(k\cdot logk)$. Thus, final time complexity would be $O(klog k + n)$ time. \\
 
 
 \item  \textbf{Min-heap of size} $k$\\
 
+First, create a minheap of the k elements of array A, which would take $O(k)$ time. 
 
 \end{enumerate}
 
@@ -469,13 +506,19 @@ Assume that we are given $n$ bolts and $n$ nuts of different sizes, where each b
 the matching nut for each bolt. The nuts and bolts are too similar to compare directly; however,
 we can test whether any nut is too big, too small, or the same size as any bolt. Prove that in the worst case, $\Omega(n \log n)$ nut-bolt tests are required to correctly match up the nuts and bolts.
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}  
+FINISH THIS
+
+\end{solution}
 	\fi
 
  \item \points{5}
 Let $S = \{e_1, e_2, \ldots, e_n\}$ be a set of $n$ distinct integers in a range large enough to mean that radix sort does not run in linear time. We aim to give an expected $O(n)$ time algorithm to report all pairs $(e, f)$ of integers in $S$ such that $e = 5f$.
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}   
+FINISH THIS
+
+\end{solution}
 	\fi
 
 
@@ -489,7 +532,10 @@ items in A in wosrt-case time $O(n)$ (the first instance of an item in increasin
 
 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}   
+FINISH THIS
+
+\end{solution}
 	\fi
 
 
