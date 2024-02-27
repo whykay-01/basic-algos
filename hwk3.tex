@@ -461,7 +461,13 @@ We need to perform the $k-th$ largest element using the QuickSelect algorithm, w
 
 \item  \textbf{Min-heap of size} $k$\\
 
-First, create a minheap of the k elements of array A, which would take $O(k)$ time. 
+First, create a minheap of the k elements of array A, which would take $O(k)$ time. Go over the rest of the elements in the array starting with the $(k+1)^th$ element and compare them with the root element of the min heap. There are two scenarios we develop in case we encounter the element.
+
+1. If element is larger than the root of the heap then remove the root element and propagate it down the tree, which would take $O(log k)$, where $log k$ is the height of the tree. 
+
+2. If the element is smaller than the root, we don't care about it as we are interested in the largest elements only.
+
+Finally, we are performing this loop for n-k times, and thus the worst time complexity would be $O((n-k) * log k)$ because we have to assume that in worst case we would have to shift the root of the heap all the time. That is simply upper-bounded by $O(nlogk)$, which is the final complexity.
 
 \end{enumerate}
 
@@ -475,6 +481,9 @@ First, create a minheap of the k elements of array A, which would take $O(k)$ ti
 \begin{solution}   
 \begin{enumerate}[label=\Roman*.]
 \item  \textbf{Unsorted array of size} $k$\\
+
+We have to sort the array first, which would take at best $O(k log k)$ for 
+
 \item  \textbf{A sorted array of size} $k$\\
 \item  \textbf{Min-heap of size} $k$\\
 \end{enumerate}
