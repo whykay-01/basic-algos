@@ -521,8 +521,9 @@ According to the tree theory, the number of all the nodes in the tree can be at 
  \item \points{5}
 Let $S = \{e_1, e_2, \ldots, e_n\}$ be a set of $n$ distinct integers in a range large enough to mean that radix sort does not run in linear time. We aim to give an expected $O(n)$ time algorithm to report all pairs $(e, f)$ of integers in $S$ such that $e = 5f$.
 \ifnum\me<2
-\begin{solution}   
-FINISH THIS
+\begin{solution}   \\
+
+The effective solution like this would involve using hash maps. We simply create the hash table with the e-values from S, where e values would serve as the keys of the hash table. For each of the e we would need to add f = 5/e, and add it as a value for the each respective key. After that, iterate over the \textbf{values} and perform constant time lookups whether the values are present in the keys. If they are report a pair e and its respective f. The entire complexity of the algorithm would be $O(n)$, since we just simply linearly go over all the values of the set S and computing the corresponding f values, after which we go over that again and look for matches.
 
 \end{solution}
 	\fi
@@ -539,7 +540,36 @@ items in A in wosrt-case time $O(n)$ (the first instance of an item in increasin
 
 	\ifnum\me<2
 \begin{solution}   
-FINISH THIS
+This is very similar to just using the hash maps, but in this case we will just use the secondary array B to keep track of all the values in A. \\
+
+Here is an example code of how this could work: \\
+
+\begin{lstlisting}[language=Python, caption=Clever RadixSort]
+def find_duplicates(A, n, m):
+    """
+    A = [1, 4, 3, 2, 0]
+    B = [0, 0, 0, 0, 0, 0]
+         ^  ^  ^  ^  ^  ^
+         0  1  2  3  4  5
+    """
+    # Initialize array B with zeros
+    B = [0] * m
+
+    duplicates = []
+
+    # go over every element in array A
+    for i in range(n):
+        # element has been encountered before?
+        if B[A[i]] == 0:
+            # mark a element for the first time
+            B[A[i]] = 1
+        else:
+            # has been encountered before --> a duplicate
+            duplicates.append((A[i], i))
+
+    return duplicates
+\end{lstlisting}
+
 
 \end{solution}
 	\fi
