@@ -506,8 +506,14 @@ Assume that we are given $n$ bolts and $n$ nuts of different sizes, where each b
 the matching nut for each bolt. The nuts and bolts are too similar to compare directly; however,
 we can test whether any nut is too big, too small, or the same size as any bolt. Prove that in the worst case, $\Omega(n \log n)$ nut-bolt tests are required to correctly match up the nuts and bolts.
 \ifnum\me<2
-\begin{solution}  
-FINISH THIS
+\begin{solution}\\  
+We are going to be using the decision tree to analyze and prove that the time complexity of the algorithm is $\Omega(nlogn)$. 
+
+The decision tree itself has internal nodes and leaves, where internal nodes would be representing the comparison between the nuts and bolts and leaf nodes would be representing the match between a nut and a bolt. Since one nut can correspond only to one bolt, our leaf nodes need to show that mapping once it occurs. 
+
+Since we have n nuts and n bolts, there is n! potential ways we can match nuts and bolts with each other. Therefore, to represent all the scenarios we would need to have n! leaves for all potential scenarios. Each pair states whether the nuts $><=$ to the size of the bolt. 
+
+According to the tree theory, the number of all the nodes in the tree can be at most $2^t$, where t represents the height of the tree. We end up with the following inequality about the nut-bolt tests. $n! \leq 2^h = h \geq log(n!)$. This could be reasonably solved using the approximation of the factorial. $n! \approx nlog_2(n) - nlog_2(e) + O(log_2 n)$. Thus, we can see that the $nlog_2(n)$ is a fastest growing term, thus the height of the tree is having a lower bound of $\Omega(n log n)$ as long as $h \geq log_2(n!)$
 
 \end{solution}
 	\fi
