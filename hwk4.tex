@@ -7,13 +7,13 @@
 \def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
 
 % **** INSERT YOUR NAME HERE ****
-\def\name{Name}
+\def\name{Yan Konichshev}
 
 % **** INSERT YOUR NETID HERE ****
-\def\netid{NetID}
+\def\netid{yk2602}
 
 % **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
-\def\collabs{NetID1, NetID2}
+\def\collabs{N/A, N/A}
 
 
 \iffalse
@@ -225,7 +225,9 @@ It is not recommended to change any other parts of the code.
     \noindent
 Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+N/A  
+\end{solution}
 \fi
 
 \newproblem{Overscrupulous}{\currentpoints}
@@ -253,7 +255,7 @@ Add the names and NetID(s) of your collaborators at the start of your solution f
 \end{array}
 \]
  \ifnum\me<2
-\begin{solution}   
+\begin{solution}
 
 \begin{tikzpicture}
 \tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
@@ -284,7 +286,21 @@ Add the names and NetID(s) of your collaborators at the start of your solution f
 \end{align*}
 
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}
+
+\begin{tikzpicture}
+\tikzset{vertex/.style = {shape=circle,draw,minimum size=1.5em}}
+% vertices
+\foreach \x/\name in {0/0,1/1,2/2,3/3,4/4,5/5,6/6,7/7} {
+    \node[vertex] (\name) at (\x*360/8:4cm) {$\name$};
+}
+% edges
+\foreach \i/\j in {0/1,0/5,1/7,2/7,3/2,3/4,3/7,4/2,4/6,5/3,6/2,6/3,7/0} {
+    \draw[->] (\i) -- (\j);
+}
+\end{tikzpicture}
+
+\end{solution}
 	\fi
 
   \item \points{4} 
