@@ -13,7 +13,7 @@
 \def\netid{yk2602}
 
 % **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
-\def\collabs{N/A, N/A}
+\def\collabs{mml9191, N/A}
 
 
 \iffalse
@@ -353,7 +353,10 @@ def DFS_Visit(i):
         if color[neighbor] == grey:
             # printing the back edge 
             print("Back-Edge:", neighbor, "->", i);
-            return True
+
+        if color[neighbor] == black and start[neighbor] < start[i]:
+            # printing the cross edge
+            print("Cross-Edge:", neighbor, "->", i)
     
     time = time + 1
     finish[i] = count 
@@ -367,7 +370,20 @@ def DFS_Visit(i):
  \item \points{2} What is a minimal set of edges that needs to be removed from (b) to turn it into a Directed Acyclic Graph (DAG)?
 
   \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution} \\
+
+There are many cycles detected in this graph: \\
+
+$[0 \to 1 \to 7 \to 0]$,\\ 
+$[3 \to 7 \to 0 \to 5 \to 3]$, \\
+$[3 \to 4 \to 6 \to 3]$\\
+$[3 \to 2 \to 7 \to 0 \to 5 \to 3]$, \\
+
+There are two edges we can remove for the graph to become DAG.\\ 
+$6 \to 3$ and $7 \to 0$\\
+
+
+\end{solution}
 	\fi
 
 \end{subtasks}
@@ -398,7 +414,55 @@ You want to test if a given node $w$ is a single point of failure. You will do t
 	exploring. Briefly argue why your algorithm works and state the running time  of the algorithm.
 	
 	 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+\begin{lstlisting}[language=Python, caption=breadth first search]
+def modified_BFS(i):
+      
+      for j in range(n):
+         level[j]= -1
+         parent[j]= -1
+      
+      q=[]
+      level[i] = 0
+      q.append(i)
+      
+      if i.children() >= 2:
+        return True
+        
+      while len(q) > 0:
+          
+          j = extract_head(q)
+          
+          for each (j,k) in enum(E):
+                
+                for neighbor of j.neighbors():
+                    if child_check(neighbor) == False:
+                        return True 
+                
+                if j is a leaf:
+                    return False
+                
+                ancestors =ancestors(j); //all ancestors of j in an array
+                
+                for child in j.children():
+                    
+                    for ancestor in ancestors:
+                        
+                        if edge_exists(child,ancestor):
+                            return True
+                    
+                if level[k] == -1:
+                
+                    level[k] = 1 + level[j]
+                    parent[k] = j
+                    append(q,k)
+                    
+                    return False
+
+\end{lstlisting}
+
+\end{solution}
 	\fi
 
 
@@ -436,7 +500,15 @@ Having finished your internship, you scurry over to your grumpy Algorithms Teach
 \end{itemize}
 Hint : Utilize proof by contradiction and remember that $G$ is undirected.
  \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+1) If the root has only one child or no children, then even if that child fails, the DFS tree can still continue traversing other nodes. If the graph consists of only one node and that node fails, well then entire graph does not exist anymore, so it's not even a point of failure, but rather point of existence of the entire graph. However, if the root has two or more children, the failure of one child can disconnect the DFS tree, making the root a single point of failure.\\
+
+2) Assume that it can be an SPOF, but also whenever you're deleting the leaf there is no other component of the DFS tree tied to it. Thus, no leaf of the DFS tree can be a SPOF.\\
+
+3) 
+
+\end{solution}
 	\fi
 
 \end{subtasks}
@@ -449,7 +521,11 @@ Hint : Utilize proof by contradiction and remember that $G$ is undirected.
 Given a list of \( n \) professional basketball players and a list of \( r \) pairs indicating rivalries between them, the objective is to determine if it is feasible to classify the players into two groups: shooters and dunkers. The classification should be done in such a way that each rivalry is between one shooter and one dunker. The algorithm should have a time complexity of \( O(n + r) \). If such a classification is possible, the algorithm should also specify the grouping.
 
 \ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+
+You can first iterate over every single player and every-time you see a dunker or a shooter you maintain say dunkers array by removing them from the input array and placing every single dunker into the dunkers array (this takes $O(n)$ time). Once you're done iterating and classifying every single player, you can start moving one by one in each of these two arrays simultaneously and establishing a link between them. If you have different lengths of elements in these 2 arrays we can actually automatically claim that such an objective could not be reached, otherwise simply establish r links between these dunkers and shooters which takes $O(r)$ time. Total runtime complexity $O(n+r)$.
+
+\end{solution}
 	\fi
 
  \item \points{2}
@@ -457,7 +533,9 @@ Given a list of \( n \) professional basketball players and a list of \( r \) pa
  
 
 	\ifnum\me<2
-\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\begin{solution}\\
+Imagin
+\end{solution}
 	\fi
 
  \item \points{2}
