@@ -1,0 +1,545 @@
+% me=0 student solutions (ps file), me=1 - my solutions (sol file),
+% me=2 - assignment (hw file)
+\def\me{0} \def\num{7} %homework number
+
+\def\due{11:55 pm on Thursday, April 18} %due date
+
+\def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
+
+% **** INSERT YOUR NAME HERE ****
+\def\name{Yan Konichshev}
+
+% **** INSERT YOUR NETID HERE ****
+\def\netid{yk2602}
+
+% **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
+\def\collabs{N/A, N/A}
+
+
+\iffalse
+
+INSTRUCTIONS: replace # by the homework number.  (if this is not
+ps#.tex, use the right file name)
+
+Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate LaTeX code.  There is a section below for student macros.
+It is not recommended to change any other parts of the code.
+
+
+\fi
+%
+
+\documentclass[11pt]{article}
+
+
+% ==== Packages ====
+\usepackage{amsfonts,amsmath}
+\usepackage{latexsym}
+\usepackage{etoolbox}
+\usepackage{totcount}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\footskip}{1in} \setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+	\renewcommand{\thepage}{#1, Page \arabic{page}}
+	\noindent
+	\begin{center}
+		\framebox{ \vbox{ \hbox to 5.78in { {\bf \course} \hfill #2 }
+				\vspace{4mm} \hbox to 5.78in { {\Large \hfill #5 \hfill} }
+				\vspace{2mm} \hbox to 5.78in { {\it #3 \hfill #4} }
+				\ifnum\me=0
+				\vspace{2mm} \hbox to 5.78in { {\it Collaborators: \collabs
+						\hfill} }
+				\fi
+		} }
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcounter{pppc}
+\newcommand{\prob}{\arabic{pppp}} %problem number
+\newcommand{\increase}{\stepcounter{pppp}\stepcounter{pppc}} %problem number
+
+% Arguments: Title, Number of Points
+\newcommand{\newproblem}[2]{
+	\increase
+	\restartlist{subtasks}
+	\ifnum\me=0
+	\ifnum\prob>0 \newpage \fi
+	\setcounter{page}{1}
+	\handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+	{\today}{Name: \name{} (\netid)}{Due: \due}
+	{Solutions to Problem \prob\ of Homework \num\ (#2)}
+	\else
+	\section*{Problem \num-\prob~(#1) \hfill {#2}}
+	\fi
+}
+
+\newlist{subtasks}{enumerate}{1}
+\setlist[subtasks]{label={(\alph*)},resume}
+
+\newcounter{numpppp}
+\loop
+\stepcounter{numpppp}
+% workaround bug in totcount (means \newtotcounter{points\arabic{pointsct}})
+\begingroup%
+\edef\tempcounter@@name{points\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\edef\tempcounter@@name{ecpoints\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\endgroup
+\ifnum \value{numpppp}<500 % max number of tasks supported
+\repeat
+
+% formating of output
+\newcommand{\disppoints}[1]{%
+	\texorpdfstring{(#1~\ifnumequal{#1}{1}{point}{points})}{}
+}
+
+% adds and displays
+\newcommand{\points}[1]{%
+	\texorpdfstring{\addtocounter{points\arabic{pppc}}{#1}\disppoints{#1}}{}%
+}
+\newcommand{\ecpoints}[1]{%
+	\texorpdfstring{\addtocounter{ecpoints\arabic{pppc}}{#1}\ec \disppoints{#1}}{}%
+}
+
+% total points of current task         
+\newcommand{\currentpoints}{% total points of current task   
+	\texorpdfstring{\ifnumequal{\totvalue{ecpoints\arabic{pppc}}}{0}%
+		{\total{points\arabic{pppc}} points}%
+		{\total{points\arabic{pppc}}+\total{ecpoints\arabic{pppc}} points}}{}%
+}
+
+\newcommand{\mixedpoints}[2]{%
+	\texorpdfstring{%
+		\addtocounter{points\arabic{pppc}}{#1}%
+		\addtocounter{ecpoints\arabic{pppc}}{#2}%
+		(#1 (+#2) points)
+	}{}%
+}
+
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+	\vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+	{\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution
+			Sketch:}} {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+		12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+	{\end{tabbing}}
+
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+% Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\For}{\mbox{\bf for }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\DownTo}{\mbox{\bf downto }}
+\newcommand{\Do}{\mbox{\bf do }}
+\newcommand{\If}{\mbox{\bf if }}
+\newcommand{\Then}{\mbox{\bf then }}
+\newcommand{\Else}{\mbox{\bf else }}
+\newcommand{\Elif}{\mbox{\bf elif }}
+\newcommand{\While}{\mbox{\bf while }}
+\newcommand{\Repeat}{\mbox{\bf repeat }}
+\newcommand{\Until}{\mbox{\bf until }}
+\newcommand{\Return}{\mbox{\bf return }}
+\newcommand{\Halt}{\mbox{\bf halt }}
+\newcommand{\Swap}{\mbox{\bf swap }}
+\newcommand{\Ex}[2]{\textrm{exchange } #1 \textrm{ with } #2}
+\newcommand{\Nil}{\mbox{\bf nil}}
+\newcommand{\In}{\mathsf{inOrder}}
+\newcommand{\Post}{\mathsf{postOrder}}
+\newcommand{\Pre}{\mathsf{preOrder}}
+\newcommand{\Root}{\mathsf{root}}
+\newcommand{\Parent}{\mathsf{parent}}
+\newcommand{\Left}{\mathsf{left}}
+\newcommand{\Right}{\mathsf{right}}
+\newcommand{\Middle}{\mathsf{middle}}
+\newcommand{\True}{\textbf{true}}
+\newcommand{\False}{\textbf{false}}
+\newcommand{\Print}{\mbox{\bf print }}
+\newcommand{\ec}{({\bf Extra Credit})}
+\newcommand{\note}{{\bf Note to Graders: }}
+\newcommand{\Rotate}{\textsc{Rotate}}
+\newcommand{\LRotate}{\textsc{LeftRotate}}
+\newcommand{\RRotate}{\textsc{RightRotate}}
+
+\newcommand{\notename}[2]{{\textcolor{red}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\sparsh}[1]{{\notename{Sparsh}{#1}}}
+
+\newcommand{\noname}[2]{{\textcolor{purple}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\tanmay}[1]{{\noname{Tanmay}{#1}}}
+\newcommand{\Gray}{\textsc{gray}}
+\newcommand{\White}{\textsc{white}}
+\newcommand{\Black}{\textsc{black}}
+
+\begin{document}
+
+\ifnum\me=0
+
+% Collaborators (on a per task basis):
+%
+% Task 1: *********** INSERT COLLABORATORS HERE *********** 
+% Task 2: *********** INSERT COLLABORATORS HERE *********** 
+% etc.  
+%
+
+\fi
+
+% \handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+% 	{\today}{Name: \name{} }{Due: \due}
+% 	{Homework \num}
+
+\newproblem{Collaborators}{0 points}
+    \noindent
+Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
+\ifnum\me<2
+\begin{solution}   INSERT YOUR SOLUTION HERE   \end{solution}
+\fi
+
+\newproblem{Divide}{\currentpoints}
+
+Let us assume that you have an \(m \times n\) matrix \(M[1 \ldots m][1 \ldots n]\) where each row is sorted, in nondecreasing order, from left to right and each column is sorted, in non-decreasing order, from top to bottom. The goal is to find a particular value \(key\) and return the index. In other words, the goal is to find (any arbitrary) indices \((i, j)\) such that \(M[i][j] = key\). If no such indices exists we want to return \((-1, -1)\).
+
+\begin{subtasks}
+	\item \points{2}
+	What are the indices of the largest element and the smallest element in \(M\). Further, compare the elements \(M[i][j]\) and \(M[i + 1][j + 1]\). Justify your choices.
+
+	\ifnum\me<2
+\begin{solution}\\
+
+Smallest element: $M[0][0]$ with $i = 0$ and $j = 0$, the element at $M[1][1]$ is larger than $M[0][0]$. This is because the lists are sorted in the ascending order both column and row-wise, so it means that the element at $(0, 0)$ must be the smallest one.\\
+
+Largest element: $M[m][n]$ with $i = m$ and $j = n$ the element at $M[m+1][n+1]$ is out of bounds. Again, since the lists are sorted in the ascending order both column and row-wise, so it means that the bottom right-most element is the largest one.\\
+
+Lastly, $M[i][j]$ is certainly strictly smaller than $M[i + 1][j + 1]$, since element at $[i + 1][j + 1]$ is located in the direction of the lower right corner, which makes it automatically larger than the $M[i][j]$ by the definition of matrix where each row and column is sorted in an increasing order from left to right and top to bottom, respectively.
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{2}
+	Fill in the blanks to complete the brute force algorithm. What is the worst-case running time of the above algorithm?
+
+\begin{code}
+    1 {\sc GridSearch-A$(M, m, n, key)$}\\
+    2 \> \For $i = 0$ to $m$ \\
+    3 \> \> \For $j = 0$ to $n$ \\
+    4 \> \> \>\If $M[i][j] == key$:\\
+    5 \> \> \> \> \textbf{then} \Return $(i, j)$ \\
+    6 \>  \Return $(-1, -1)$
+\end{code}
+
+
+
+	
+
+	\ifnum\me<2
+\begin{solution}\\
+
+The worst-time complexity for this algorithm would be $O(n \times m)$, since in the worst-case scenario if we have to find the largest key -- we would need to iterate over the entire matrix to do so.
+
+ \end{solution}
+	\fi
+
+ \end{subtasks}
+
+We will now look at possible ways of implementing divide and conquer to solve this problem. Specifically, let us look at a rectangular grid of size \(m \times n\) where \(m\) and \(n\) are powers of 2. Without loss of generality, let \(m < n\). Let us consider an element \(M[i][j]\) and the resulting quadrants as drawn below. Quadrant 1 contains \(M[i][j + 1]\), Quadrant 2 contains \(M[i][j]\), Quadrant 3 contains \(M[i + 1][j]\) and Quadrant 4 contains \(M[i + 1][j + 1]\), as depicted in the figure below.
+
+\[
+\begin{array}{c|c}
+  \textbf{QUADRANT 2} & \textbf{QUADRANT 1} \\
+  M[i][j] & M[i][j+1] \\
+  \hline
+  M[i+1][j] & M[i+1][j+1] \\
+  \textbf{QUADRANT 3} & \textbf{QUADRANT 4} \\
+\end{array}
+\]
+
+We will compare \(key\) with \(M[i][j]\). If \(M[i][j] = key\) we return \((i, j)\). In the next question, you will identify the suitable quadrants to search when \(M[i][j] \neq key\).
+
+ 
+ \begin{subtasks}
+     
+	
+	\item \points{2}
+	(i) What are the dimensions of each quadrant in terms of $m, n, i, j$? (ii) Clearly, identify the regions where the element key can be found in the following
+two cases: a) \(M[i][j] > key\) b) \(M[i][j] < key\). Justify your choice. 
+	\ifnum\me<2
+\begin{solution}\\
+
+
+(i) Please assume that indexing starts from 1 in all cases:\\
+
+Q1: $i \times (n - j)$\\
+Q2: $i \times j$\\
+Q3: $(m - i) \times j$\\
+Q4: $(m - i) \times (n - j)$\\
+
+(ii) Areas where key can be found in the following two cases:\\
+
+\textbf{Case 1} - $key < M[i][j]$:\\
+
+It means that the $key$ could be in the second quadrant, except for the $M[i][j]$ itself, since it is the largest element in the quadrant as it is located in the bottom-right corner of the sub-grid. Additionally, there is a chance values smaller than M[i][j] might be found in Q1 and Q3, as if we have big gaps between values, we could end up having them there. In short, the $key$ could be anywhere except for the Q4.\\
+
+\textbf{Case 2} - $key > M[i][j]$:\\
+
+The element at $M[i][j]$ would be strictly smaller than the $key$ if the $key$ is located anywhere in Q4, or potentially in Q1, or Q3. In short, the $key$ could be anywhere except for the Q1.
+
+
+\end{solution}
+	\fi
+
+
+ \item \points{4}
+	Use the above sub-part to come up with an efficient recursive algorithm based on divide and conquer
+strategy to solve this problem. In particular choose an appropriate $i, j$ such that each subproblem has the same number of elements when $m, n > 1$. Clearly, state the recursive calls
+made. Identify a suitable base case.
+	\ifnum\me<2
+\begin{solution} \\
+\begin{algorithm}
+\caption{GridSearch-modified}
+\begin{algorithmic}[1]
+\Function{GridSearch-modified}{$M, m, n, key$}
+    \If{\textbf{length}($M$) == 1 and \textbf{length}($M[0]$) == 1}
+        \If{$M[i][j] == key$}
+            \State \Return \textbf{(i, j)}
+        \Else
+            \State \Return \textbf{(-1, -1)}
+        \EndIf
+    \EndIf
+    \State $i, j$ = $m/2$, $n/2$
+    \If{$key < M[i][j]$}
+        \State $Q2 = \text{{GridSearch-modified}}([row[:j] \text{{ for }} row \text{{ in }} M[:i]], i, j, key)$
+        \State $Q3 = \text{{GridSearch-modified}}([row[j:] \text{{ for }} row \text{{ in }} M[:i]], i, j, key)$
+        \State $Q1 = \text{{GridSearch-modified}}([row[:j] \text{{ for }} row \text{{ in }} M[i:]], i, j, key)$
+        \State \Return $Q2$ or $Q3$ or $Q1$
+    \ElsIf{$key > M[i][j]$}
+        \State $Q4 = \text{{GridSearch-modified}}([row[j:] \text{{ for }} row \text{{ in }} M[i:]], i, j, key)$
+        \State $Q3 = \text{{GridSearch-modified}}([row[j:] \text{{ for }} row \text{{ in }} M[:i]], i, j, key)$
+        \State $Q1 = \text{{GridSearch-modified}}([row[:j] \text{{ for }} row \text{{ in }} M[i:]], i, j, key)$
+        \State \Return $Q1$ or $Q3$ or $Q4$
+    \Else
+        \State \Return \textbf{(i, j)}
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+We split up the matrix into 3 regions every single time, this way every single recursive call we would have to deal only with 3/4 of the initial problem by removing either Q1 or Q4 based on the comparison of M[i][j] and the key.
+
+
+
+\end{solution}
+	\fi
+	
+	\item \points{4}
+	Let $N = mn$ be the size of the sub-problem. Further, let $T(N)$ denote the running
+time of your algorithm from part (d) on an input of size $N$. Then, formulate a recurrence
+relation for $T(N)$ in terms of the size of the subproblems. Do not forget to write the base
+case of your recurrence relation. Solve for the same using any method to obtain the worst
+case running time.
+	\ifnum\me<2
+\begin{solution}\\
+
+If $N$ is the size of the sub-problem, where $N=m \times n$, then the recurrence relation would be:
+
+$$T(N) = 3 \dot T(N/4) + 1$$
+
+The base case is $T(1) = 1$\\
+
+And solving it using Master's Theorem, we get: a=3, b=4, k=0. Thus, $T(N) = O(n^{log_4(3)})$
+
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{6}
+	We can hope to achieve a significant speed-up by choosing \(i = 1\), \(j = n\). Immediately, you can notice that some of the quadrants defined earlier do not exist. Use the intuitions from part (d) to come up with the recursive algorithm. Use the hint provided to help you. Explain your algorithm and justify the correctness.
+    Further assume that you are working on a square matrix(\(n \times n\)) and let \(T(n)\) be the worst case running time of this algorithm. Write a recursive relation for \(T(n)\) in terms of the subproblems and solve the same.
+
+(Hint: Focus on the quadrant(s) being removed in both cases of part (d). You might need to extend the boundary of one of these quadrants. In this strategy, you can only hope to remove a maximum of \(n\) elements in one recursive call.)
+
+	\ifnum\me<2
+\begin{solution}\\
+
+\begin{algorithm}
+\caption{GridSearch-modified-2}
+\begin{algorithmic}[1]
+\Function{GridSearch-modified-2}{$M, key$}
+    \If{$length(M) == 0$ or $length(M[0]) == 0$}
+        \State \Return $(-1, -1)$
+    \EndIf
+    \State \Return \Call{GridSearch-modified-2}{$M, key, 0, \text{M}[0].\text{length} - 1$}
+\EndFunction
+
+\Function{GridSearch-modified-2}{$M, key, i, j$}
+    \If{$i > \text{M}.\text{length}$ or $j < 0$}
+        \State \Return $(-1, -1)$
+        \Comment{Out of bounds: element not found}
+    \EndIf
+    \If{$key == \text{M}[i][j]$}
+        \State \Return $[i, j]$
+    \ElsIf{$key < \text{M}[i][j]$}
+        \State \Return \Call{GridSearch-modified-2}{$M, key, i, j - 1$} \Comment{Move left}
+    \Else
+        \State \Return \Call{GridSearch-modified-2}{$M, key, i + 1, j$} \Comment{Move down}
+    \EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}\\
+    
+Speaking of the time complexity, the algorithm performs in $O(n+m)$, but since the assumption is that this is square matrix, it would be performing in $O(N+N) = O(2N) = O(N)$ time complexity.
+
+\end{solution}
+	\fi
+
+\end{subtasks}
+
+
+\newproblem{Minimum Spans}{\currentpoints}
+
+Assume $A[1\ldots n]$ is an array of numbers, where each $A[i]\in \{0,1,2\}$.
+A {\em span} of $A$ is any interval  $[start,end]$ such that $\{0,1,2\}\subseteq \{A[start],\ldots,A[end]\}$.
+For example, if $A = (0,1,1,0,2,1,0)$, then $[1,5]$ and $[4,6]$ are spans of $A$, while $[1,4]$ is not (since $2\not \in \{0,1,1,0\}$).
+The {\em cardinality} of the span $[start,end]$ is defined to be $(end-start+1)$. Finally, a span $[start,end]$ is a {\em minimum span} if 
+it has minimal cardinality among all other spans. For the example above, $[4,6]$ is a minimum span (of cardinality $3$), while $[1,5]$ is not a minimum span. 
+
+\begin{subtasks}
+	\item \points{3}
+	Show that if $(start,end)$ is a minimum span of an array $A[1,\ldots,n]$ then the subarray $A[start,\ldots,end]$ is of the form
+	\begin{equation*}
+		(a, \underbrace{b, \cdots, b}_{\mathclap{end-start-1 \text{ times}}}, c)
+	\end{equation*}
+	where $(a,b,c)$ is a permutation of $(0,1,2)$. In other words, a minimum span has a given structure where the end points are distinct integers, and internally it simply repeats the third remaining integer. 
+	For instance, in the example above the minimum span $[4,6]$ is of the form $(0,2,1)$ which has the desired structure with $a=0$, $b=2$, and $c=1$.
+	\ifnum\me<2
+\begin{solution}\\
+
+It could be easily shown by contradiction. The key here is to focus on the last element of the subarray $A[start, ..., end]$, which is always $c$. It has to be the third element of the spanning set, since we already have $a$ and $b$ preceding the element. In addition to that, there could be any sort of appearance of the first two elements of the spanning set, as we observe them there, $a$ and $b$ do tend to appear there and if element $c$ was to appear somewhere in the middle, it must've concluded the span, making what we named the minimum spanning tree even shorter, which is a direct contradiction. Thus, the subarray $A[start, ..., end]$ must be of that provided form. 
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{4}
+	In the following, assume for generality that the array has indices $\ell,\ldots,m$, i.e., consider $A[\ell,\cdots,m]$.
+	
+	
+	In this part you will write a \emph{linear-time} algorithm $\textsc{PartC}(A, \ell, m)$ that returns a span $[start,end]$ satisfying the following conditions:
+	\begin{itemize}[label=-,nosep]
+		\item $\ell \leq start \leq end \leq m$;
+		\item $A[start],\ldots,A[end]$ satisfies the structure from part (a);
+		\item and $start\leq (\ell+m)/2<end$. i.e. the \textbf{span passes through the middle}.
+	\end{itemize}
+	If multiple such spans exist, return one of smallest cardinality.
+	If none exists, the algorithm must return $(\infty,\infty)$.
+	
+	For example, for $A=[2,1,0,0,2,2]$ the minimum span of $A$ is 
+	$[1,3]$. However, $\textsc{PartC}(A,1,6)$ will not return that span as it does not satisfy the third condition. Instead, it returns $[2,5]$.
+	
+	Present an iterative (i.e., non-recursive) algorithm.
+	Briefly justify the running time of your algorithm.
+	\ifnum\me<2
+\begin{solution}\\
+
+The most naive yet efficient iterative approach to solve this problem is about having 2 pointers $p$ and $q$, which are initialized in the middle of the array (l+m // 2). Both pointers, $p$ and $q$ should be iterative in the direction of the beginning and the end of the $A[l, ..., m]$ of the array. These pointers have to maintain the starting and the ending positions for the potential subarray which would contain the minimum spanning list. In worst case, this algorithm would have to iterate at twice over the entire list, which makes the time complexity of it of $O(2N) = O(N)$. This algorithm ensures that we keep track of the minimum spanning subarray and that it is passing through the middle of the initial array.
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{3}
+	Use the previous parts as black-box (including part (c) above),  give a recursive
+	algorithm,
+	based on the divide-and-conquer paradigm to
+	find a minimum span of the array $A$. If several exists, it can return an arbitrary one of them and if none exists it should return $[\infty,\infty]$. 
+	\ifnum\me<2
+\begin{solution}\\
+
+
+% \begin{algorithm}
+% \caption{min\_span}
+% \begin{algorithmic}[1]
+% \Function{min\_span}{$A, l, m$}
+%     \State $p \gets l$
+%     \State $q \gets m$
+%     \State $p_new \gets \text{None}$
+%     \State $q_new \gets \text{None}$
+%     \State $p, q \gets \text{part_c}(A, l, m)$
+%     \While{$p \neq p_new$ and $q \neq q_new$}
+%         \State $r1 \gets \text{part_c}(A, p, \frac{p + q}{2})$
+%         \State $r2 \gets \text{part_c}(A, \frac{p + q}{2}, q)$
+%         \State new range $[p_new][q_new] \gets \min(r1, r2)$
+%     \EndWhile
+% \EndFunction
+% \end{algorithmic}
+% \end{algorithm}
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{3}
+	Formulate a recurrence relation for the worst case time complexity for your
+	above algorithm, with appropriate base cases. Solve for
+	it using any method of your choice. 
+	\ifnum\me<2
+\begin{solution}INSERT YOUR SOLUTION HERE\end{solution}
+	\fi
+	
+	
+	\item \ecpoints{5}
+ Try to improve your solution from the previous parts to get a $O(n)$ divide and conquer approach.
+	You may assume that n is a power of 2 for simplicity.
+	\ifnum\me<2
+\begin{solution}INSERT YOUR SOLUTION HERE\end{solution}
+	\fi
+	
+	
+	\item \points{4}
+	Design an \emph{iterative} $O(n)$ algorithm for the minimum span problem.
+	\hint{Consider the solution from the previous subproblem but with recursions on parts of sizes $n-1$ and $1$ instead of $n/2$ and $n/2$. Unwind the recursion.}
+	
+	\ifnum\me<2
+\begin{solution}INSERT YOUR SOLUTION HERE\end{solution}
+	\fi
+\end{subtasks}
+
+
+\end{document}
+
+

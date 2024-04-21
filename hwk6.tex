@@ -1,0 +1,493 @@
+
+% me=0 student solutions (ps file), me=1 - my solutions (sol file),
+% me=2 - assignment (hw file)
+\def\me{0} \def\num{6} %homework number
+
+\def\due{11:55 pm on Thursday, April 11} %due date
+
+\def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
+
+% **** INSERT YOUR NAME HERE ****
+\def\name{Yan Konichshev}
+
+% **** INSERT YOUR NETID HERE ****
+\def\netid{yk2602}
+
+% **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
+\def\collabs{N/A, N/A}
+
+
+\iffalse
+
+INSTRUCTIONS: replace # by the homework number.  (if this is not
+ps#.tex, use the right file name)
+
+Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate LaTeX code.  There is a section below for student macros.
+It is not recommended to change any other parts of the code.
+
+
+\fi
+%
+
+\documentclass[11pt]{article}
+
+
+% ==== Packages ====
+\usepackage{amsfonts,amsmath}
+\usepackage{latexsym}
+\usepackage{etoolbox}
+\usepackage{totcount}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\footskip}{1in} \setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+	\renewcommand{\thepage}{#1, Page \arabic{page}}
+	\noindent
+	\begin{center}
+		\framebox{ \vbox{ \hbox to 5.78in { {\bf \course} \hfill #2 }
+				\vspace{4mm} \hbox to 5.78in { {\Large \hfill #5 \hfill} }
+				\vspace{2mm} \hbox to 5.78in { {\it #3 \hfill #4} }
+				\ifnum\me=0
+				\vspace{2mm} \hbox to 5.78in { {\it Collaborators: \collabs
+						\hfill} }
+				\fi
+		} }
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcounter{pppc}
+\newcommand{\prob}{\arabic{pppp}} %problem number
+\newcommand{\increase}{\stepcounter{pppp}\stepcounter{pppc}} %problem number
+
+% Arguments: Title, Number of Points
+\newcommand{\newproblem}[2]{
+	\increase
+	\restartlist{subtasks}
+	\ifnum\me=0
+	\ifnum\prob>0 \newpage \fi
+	\setcounter{page}{1}
+	\handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+	{\today}{Name: \name{} (\netid)}{Due: \due}
+	{Solutions to Problem \prob\ of Homework \num\ (#2)}
+	\else
+	\section*{Problem \num-\prob~(#1) \hfill {#2}}
+	\fi
+}
+
+\newlist{subtasks}{enumerate}{1}
+\setlist[subtasks]{label={(\alph*)},resume}
+
+\newcounter{numpppp}
+\loop
+\stepcounter{numpppp}
+% workaround bug in totcount (means \newtotcounter{points\arabic{pointsct}})
+\begingroup%
+\edef\tempcounter@@name{points\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\edef\tempcounter@@name{ecpoints\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\endgroup
+\ifnum \value{numpppp}<500 % max number of tasks supported
+\repeat
+
+% formating of output
+\newcommand{\disppoints}[1]{%
+	\texorpdfstring{(#1~\ifnumequal{#1}{1}{point}{points})}{}
+}
+
+% adds and displays
+\newcommand{\points}[1]{%
+	\texorpdfstring{\addtocounter{points\arabic{pppc}}{#1}\disppoints{#1}}{}%
+}
+\newcommand{\ecpoints}[1]{%
+	\texorpdfstring{\addtocounter{ecpoints\arabic{pppc}}{#1}\ec \disppoints{#1}}{}%
+}
+
+% total points of current task         
+\newcommand{\currentpoints}{% total points of current task   
+	\texorpdfstring{\ifnumequal{\totvalue{ecpoints\arabic{pppc}}}{0}%
+		{\total{points\arabic{pppc}} points}%
+		{\total{points\arabic{pppc}}+\total{ecpoints\arabic{pppc}} points}}{}%
+}
+
+\newcommand{\mixedpoints}[2]{%
+	\texorpdfstring{%
+		\addtocounter{points\arabic{pppc}}{#1}%
+		\addtocounter{ecpoints\arabic{pppc}}{#2}%
+		(#1 (+#2) points)
+	}{}%
+}
+
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+	\vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+	{\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution
+			Sketch:}} {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+		12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+	{\end{tabbing}}
+
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+% Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\For}{\mbox{\bf for }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\DownTo}{\mbox{\bf downto }}
+\newcommand{\Do}{\mbox{\bf do }}
+\newcommand{\If}{\mbox{\bf if }}
+\newcommand{\Then}{\mbox{\bf then }}
+\newcommand{\Else}{\mbox{\bf else }}
+\newcommand{\Elif}{\mbox{\bf elif }}
+\newcommand{\While}{\mbox{\bf while }}
+\newcommand{\Repeat}{\mbox{\bf repeat }}
+\newcommand{\Until}{\mbox{\bf until }}
+\newcommand{\Return}{\mbox{\bf return }}
+\newcommand{\Halt}{\mbox{\bf halt }}
+\newcommand{\Swap}{\mbox{\bf swap }}
+\newcommand{\Ex}[2]{\textrm{exchange } #1 \textrm{ with } #2}
+\newcommand{\Nil}{\mbox{\bf nil}}
+\newcommand{\In}{\mathsf{inOrder}}
+\newcommand{\Post}{\mathsf{postOrder}}
+\newcommand{\Pre}{\mathsf{preOrder}}
+\newcommand{\Root}{\mathsf{root}}
+\newcommand{\Parent}{\mathsf{parent}}
+\newcommand{\Left}{\mathsf{left}}
+\newcommand{\Right}{\mathsf{right}}
+\newcommand{\Middle}{\mathsf{middle}}
+\newcommand{\True}{\textbf{true}}
+\newcommand{\False}{\textbf{false}}
+\newcommand{\Print}{\mbox{\bf print }}
+\newcommand{\ec}{({\bf Extra Credit})}
+\newcommand{\note}{{\bf Note to Graders: }}
+\newcommand{\Rotate}{\textsc{Rotate}}
+\newcommand{\LRotate}{\textsc{LeftRotate}}
+\newcommand{\RRotate}{\textsc{RightRotate}}
+
+\newcommand{\notename}[2]{{\textcolor{red}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\sparsh}[1]{{\notename{Sparsh}{#1}}}
+
+\newcommand{\noname}[2]{{\textcolor{purple}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\tanmay}[1]{{\noname{Tanmay}{#1}}}
+\newcommand{\Gray}{\textsc{gray}}
+\newcommand{\White}{\textsc{white}}
+\newcommand{\Black}{\textsc{black}}
+
+\begin{document}
+
+\ifnum\me=0
+
+% Collaborators (on a per task basis):
+%
+% Task 1: *********** INSERT COLLABORATORS HERE *********** 
+% Task 2: *********** INSERT COLLABORATORS HERE *********** 
+% etc.  
+%
+
+\fi
+
+% \handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+% 	{\today}{Name: \name{} }{Due: \due}
+% 	{Homework \num}
+
+\newproblem{Collaborators}{0 points}
+    \noindent
+Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
+\ifnum\me<2
+\begin{solution}\\
+N/A
+\end{solution}
+\fi
+
+\newproblem{Bore}{\currentpoints}
+
+Consider a file that uses the following list of symbols with the corresponding frequencies:
+\begin{center}
+\begin{tabular}{c|c}
+\textbf{Letter} & \textbf{Frequency} \\
+\hline
+A & 0.06 \\
+B & 0.09 \\
+C & 0.10 \\
+D & 0.12 \\
+E & 0.15 \\
+F & 0.16 \\
+G & 0.32 \\
+\end{tabular}
+\end{center}
+\noindent
+
+
+
+\begin{subtasks}
+ \item \points{3}
+        Find an optimal prefix code based on Huffman’s algorithm (using the symbols 0 and 1 only). Describe
+both the code (i.e., mapping from symbols to bit strings) and the corresponding tree.
+
+
+  \ifnum\me<2
+\begin{solution}\\
+
+I came up with a tree that could be seen from the screenshots above. Additionally, I have been able to achieve the following string:\\
+101010101010101010101010101110111011101110111011101110111011010010010010010010010010010010011011011011011011011011011011011011100100100100100100100100100100100100100100100000000000000000000000000000000001111111111111111111111111111111111111111111111111111111111111111.
+
+From the following string:\\
+AAAAAABBBBBBBBBCCCCCCCCCCDDDDDDDDDDDD\\EEEEEEEEEEEEEEEFFFFFFFFFFFFFFFFGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG\\
+
+I used a strategy where you have to build a tree using bottom top approach. This way, I was sure that I could be able to create a tree such that the prefix code would be fully reversible.
+
+\end{solution}
+	\fi
+  
+ \item \points{2} 
+In general, are Huffman codes unique? That is, for a given set of letters and corresponding frequencies is there a unique Huffman encoding? If yes, justify. Otherwise provide a counterexample.  
+  \ifnum\me<2
+\begin{solution} \\
+
+In general, Huffman codes cannot be claimed to be unique. One simple counter-example is when we have a couple of elements with a similar frequency. In this case, the Huffman tree could be either where element A would be preceding B or the other way around, but both of the trees would be valid. Since trees would be different and valid, we would also be able to produce different, but valid Huffman codes.
+
+
+\end{solution}
+	\fi
+
+
+  \item \points{2} 
+Is it possible that in an optimal code, a letter with lower frequency has a shorter encoding than a
+letter with a higher frequency?  
+If yes then provide an explicit example of
+such code. Otherwise, explain why not.
+  \ifnum\me<2
+\begin{solution}\\
+
+In an optimal Huffman code it is not possible that the letter with a lower frequency has a shorter encoding than a letter with a higher frequency. This is because optimal code is supposed to shorten the overall memory taken by the string, so if the higher frequency elements would be longer, then it means the ultimate purpose is sort of defeated. Thus, we can afford to make less frequent elements lengthier, and more frequent elements shorter. 
+
+\end{solution}
+\fi
+
+
+\end{subtasks}
+ 
+
+ \newproblem{Crossover}{\currentpoints}
+ You are given a set $S = \{a_1, a_2, \ldots, a_n\}$ of tasks, where task $a_i$ requires $p_i$ units of 
+processing time to complete. Let $C_i$ be the completion time of task $a_i$, that is, the 
+time at which task $a_i$ completes processing. Your goal is to minimize the average 
+completion time, that is, to minimize $\frac{1}{n} \sum_{i=1}^{n} C_i$. For example, suppose that 
+there are two tasks $a_1$ and $a_2$ with $p_1 = 3$ and $p_2 = 5$, and consider the schedule 
+in which $a_2$ runs first, followed by $a_1$. Then we have $C_2 = 5$, $C_1 = 8$, and the 
+average completion time is $\frac{5 + 8}{2} = 6.5$. If task $a_1$ runs first, however, then we 
+have $C_1 = 3$, $C_2 = 8$, and the average completion time is $\frac{3 + 8}{2} = 5.5$.
+
+\begin{subtasks}
+
+
+\item \points{6} Give an algorithm that schedules the tasks so as to minimize the average completion time. 
+Each task must run nonpreemptively, that is, once task $a_i$ starts, it must run continuously 
+for $p_i$ units of time until it is done. \textbf{Prove} that your algorithm minimizes the average 
+completion time, and analyze the \textbf{running time} of your algorithm. 
+
+
+\ifnum\me<2
+\begin{solution}\\
+
+Sort all the tasks based in the increasing order of their processing time (tasks with lesser processing time go first). This will take $O(nlogn)$ if we invoke steady sorting algorithms, such as merge sort. This will keep our values in the numerator at minimum because we would end up in a situation where there will be the smallest ever value, which will be the first one and all the other ones will be accumulated from there on. This way we can make sure that the algorithm is minimizing the average time, since denominator is always having the same number (number of elements), but the numerator would be smallest possible one. Intuitively, sorting the processing times in increasing order ensures that shorter jobs are completed first, leading to a lower average completion time compared to any other scheduling strategy
+
+\end{solution}
+\fi
+
+\item \points{6} Suppose now that the tasks are not all available at once. That is, each task 
+cannot start until its release time $b_i$. Suppose also that tasks may be preempted, 
+so that a task can be suspended and restarted at a later time. For example, a 
+task $a_i$ with processing time $p_i = 6$ and release time $b_i = 1$ might start running 
+at time 1 and be preempted at time 4. It might then resume at time 10 but be 
+preempted at time 11, and it might finally resume at time 13 and complete at 
+time 15. Task $a_i$ has run for a total of 6 time units, but its running time has 
+been divided into three pieces. Give an algorithm that schedules the tasks so as 
+to minimize the average completion time in this new scenario. 
+\textbf{Argue} that your algorithm minimizes the average completion time, and analyze the \textbf{running time} 
+of your algorithm. 
+
+\ifnum\me<2
+\begin{solution} \\
+Whenever there are available tasks, run those which have the shortest processing times. If there exists a new task with a shorter remaining processing time with comparison to the locally running task, let the new task take over it run the new task as a new priority. Keep doing this until all the tasks have been successfully scheduled and finished. We can argue that this approach would be the most optimal one and it would actually minimize the average completion time as we prioritize tasks which could be completed faster thus shortening the waiting time and improving the AVT. This sort of algorithm requires priority queue to be taking care of tasks which should be prioritized. Since we have $n$ elements, and each operation takes $O(logn)$ time, then we would be ending up with $O(nlogn)$ final time complexity for this algorithm.
+
+\end{solution}
+\fi
+\end{subtasks}
+
+
+\newproblem{Subway Hacking}{\currentpoints}
+
+In the imaginary city of New Amsterdam, the subway system is run by the Mediocre Transit Authority (MTA). The subway system uses a single-fare system, where each ride costs \$1 irrespective of the length of the trip. (As such, the cost corresponds just to the number of trips.)
+Recently, after only a few years of delay, the MTA rolled out their tap-to-pay fare payment system. 
+To incentivize people to switch to the new system, they decided to introduce \emph{fare capping} where one pays for at most $M$ trips in a given week (starting on Mondays) when using the same payment card.
+
+
+You are a smart and frugal student who knows their ride schedule in advance. 
+More concretely, you know that your semester consists of $n$ weeks, and you know that in week $i$ on the $j$-th day (where $1 \leq j \leq 7$) you will take $R[i,j]$ many trips.
+
+\begin{subtasks}
+	\item \points{3}
+	Assume you only use a single payment card. Give a formula for the number of actually paid trips. Don't forget to explain it.
+ \hint{Utilize summation and min operators}
+	
+	\ifnum\me<2
+\begin{solution}
+\[ \text{price} = \sum_{i=1}^{n} \min \left( \sum_{j=1}^{7} R[i,j], M \right) \]
+
+Here we are assuming the equivalency of the $R[i, j]$ to the amount of money one person would be paying for one trip, which is 1 USD. In this case, we will have an ultimate price each week, which would be either the number of trips we had throughout the entire week, or the fixed amount M, which is reached at a certain level of trips per week and capped there. Then we sum all the instances across different weeks and get an ultimate value we paid for all the trips during the semester.
+
+\end{solution}
+	\fi
+\end{subtasks}
+
+
+\noindent
+You now wonder whether the MTA's fare capping program will automatically lead to the cheapest solution for you, or whether you should juggle multiple payment cards to manually optimize the scheme. More concretely, you have $k$ payment cards and you are willing to use a different one each day, in search for the lowest cost, but want to carry at most one card at any given day. 
+As such, a \emph{strategy} $Z$ is a function from week-day pairs $(w,d)$ to the payment cards $1,\ldots,k$ you use on that day. The goal is to come up with a strategy that minimizes the number of paid trips. 
+
+\begin{subtasks}
+	\item \points{4}
+	Given such a strategy $Z$, devise a cost function $F_{w,i}(Z)$ that accounts for the number of paid trips for days $1,\ldots,i$ of week $w$. Don't forget to explain it.(In other words, only consider a single week $w$ and only the first $i$ days thereof.)
+	
+	
+	\hint{You might find the indicator function useful
+		\begin{equation*}
+			\mathds{1}_{Z,w,p}(d) := 
+			\begin{cases}
+				1 & Z(w,d) = p, \\
+				0 & \text{otherwise},
+			\end{cases}
+		\end{equation*}
+	which for fixed $Z$, $w$, and $p$ determines whether $Z$ uses $p$ on day $d$ of the given week $w$.}
+	
+	\ifnum\me<2
+\begin{solution}
+\[ \text{$F_{w,i}(Z)$} = \sum_{p=1}^{k} \min \left( \sum_{j=1}^{i} R[j,w] \cdot \mathds{1}_{Z,w,p}(d) , M \right) \]\\
+
+We calculate the total number of trips made up to day $i$ of week $w$ using payment card $p$. We do so by taking the minimum between the total number of trips made using payment card $p$ up to day $i$ and the fare cap $M$. This way, we find the best price-point depending on the strategy Z we pick for choosing cards on a specific day $d$. Indicator $1$ is also being super useful in this case, as we are establishing the strategy constraint with this function. 
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{6}
+	Now show that within a fixed week $w$ using a single payment card is optimal using the ``Greedy Always Stays Ahead'' (GASA) strategy.
+	In other words, let $G$ be the strategy such that $G(w,d) = 1$ for any week $w$ and day $d$. Using induction over $i$, prove that
+	\begin{equation*}
+		F_{w,i}(G) \leq F_{w,i}(Z)
+	\end{equation*}
+	for any $1 \leq i \leq 7$ and any strategy $Z$. For simplicity, you can assume $R[w,d]=0$ for any $d > 7$.
+
+	\hint{It may be useful to introduce the number of paid trips in that interval \emph{before} day $i+1$ as an explicit term.}
+	
+	\ifnum\me<2
+\begin{solution}\\
+
+\textbf{Base case: i = 1}\\
+The cost function with $F_{w,1}(G)$ represents the total number of paid trips on the $first$ day of week $w$ using the GASA strategy, which is simply the number of trips taken on that day. This is because GASA always uses the same payment card every day. \\
+
+Alternatively, the cost function with $F_{w,1}(Z)$ represents the total number of paid trips on the first day of week $w$ using any arbitrary strategy $Z$.\\
+
+Since GASA always uses the same payment card regardless of the day, 
+$F_{w,i}(G) \leq F_{w,i}(Z)$ for any strategy Z because (G) only considers one payment card while (Z) may involve multiple payment cards\\
+
+% $F_{w,i}(G) \leq F_{w,i}(Z)$\\
+
+
+\textbf{Inductive step: k + 1}\\
+
+Assume that there is a $k$, such that a $F_{w,i}(G) \leq F_{w,i}(Z)$ holds true. Let's introduce a new variable, $k+1$.\\
+
+By the inductive hypothesis, we know that $F_{w,k}(G) \leq F_{w,k}(Z)$. We have two cases left.
+
+Case 1: $F_{w,k}(G) = F_{w,k}(Z)$. In this case, GASA strategy will not increase the total cost, as it stays within the fare cap on $k+1$-th day
+
+Case 2: $F_{w,k}(G) \leq F_{w,k}(Z)$. Then using the GASA strategy on the $k+1$-th day will also not increase the total cost, as it remains ahead in terms of paid trips.
+
+Thus, we proved that $F_{w,i}(G) \leq F_{w,i}(Z)$ for all $i$'s
+
+\end{solution}
+	\fi
+	
+	\item \points{3}
+	Use the previous part to conclude that the greedy part is optimal for the entire semester. To this end, first express the cost of the first $n$ weeks of the semester as a function $S_{n}(Z)$ in terms of $F_{i,w}$ and then perform a simple inductive argument.
+	
+	\ifnum\me<2
+\begin{solution}\\
+We are defining S functions as follows:\\
+$S_{n}(Z) = F_{w,7}(Z)$\\
+$S_{n}(G) = F_{w,7}(G)$\\
+
+
+Greedy is best for the whole semester whenever we have $S_{n}(G) \leq S_{n}(Z)$. Let's prove it.\\
+
+\textbf{Base case:} When $n = 1$, we have 
+$S_{n}(G) = F_{1,7}(G) \leq S_{1}(Z) = F_{1,7}(Z)$\\
+
+\textbf{Inductive step:} Let's now go ahead and assume that $S_{k}(G) \leq S_{k}(Z)$ holds true for an arbitrary $k$. Thus, we need to show that $S_{k+1}(G) \leq S_{k+1}(Z)$.\\
+
+$S_{k+1}(G) = S_{k}(G) + F_{k+1}(G)$ and same for the $Z$ strategy.
+
+Since we have proven from the previous point that $F_{k+1}(G) \leq F_{k+1}(Z)$, we can assume that $S_{k}(G) + F_{k+1}(G) \leq S_{k}(Z) + F_{k+1}(Z)$, and thus it leads to $S_{k+1}(G) \leq S_{k+1}(Z)$, which implies that greedy approach is the most optimal one for the entire semester.
+
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{3}
+	Recently, the system was upgraded to start the fare-capping period no longer necessarily on Mondays but on the first day you take a (paid) trip. For instance, if your very first trip is on a Tuesday, then the first period runs from that Tuesday to the next Monday. The next period then starts on the day you take your next trip afterwards. For instance, if you then stay home Tuesday and Wednesday, the next period would start on Thursday.
+	
+	Show that using a single payment card is no longer optimal. To this end, provide an example with $M=12$ maximal paid trips and $n=2$ weeks such that using two cards would lead to a lower total cost.
+
+ 
+	\ifnum\me<2
+\begin{solution}\\
+
+Let me provide a counterexample of how using one card would no longer be optimal.\\
+
+Imagine on week 1 we will have made 3 trips on Monday and 9 trips on Sunday. In the week 2 let's say we are going to have all 12 trips on Monday.\\
+
+If we are using only one card for the whole thing, we are going to end up paying 24 dollars for 24 trips we are going to make. On the other hand, if we are using 2 card strategy, we can work with it in the following way:\\
+
+Use the first card for the first Monday: 3 trips. For the first Sunday and Monday of the second week we can use the second card, and since 12+9 $>$ 12, we would be end up paying the capped price of 12 bucks. Thus using 2 cards after modification we will end up saving 9 dollars in this case. There are many other examples, but the point is that after the modification of the system, using one card is no longer optimal.
+
+\end{solution}
+	\fi
+\end{subtasks} 
+
+\end{document}
+
+
