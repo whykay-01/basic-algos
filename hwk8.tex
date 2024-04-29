@@ -1,0 +1,475 @@
+% me=0 student solutions (ps file), me=1 - my solutions (sol file),
+% me=2 - assignment (hw file)
+\def\me{0} \def\num{8} %homework number
+
+\def\due{11:55 pm on Thursday, April 27} %due date
+
+\def\course{CSCI-UA 310-007, Basic Algorithms} %course name, changed only once
+
+% **** INSERT YOUR NAME HERE ****
+\def\name{Yan Konichshev}
+
+% **** INSERT YOUR NETID HERE ****
+\def\netid{yk2602}
+
+% **** INSERT NETIDs OF YOUR COLLABORATORS HERE ****
+\def\collabs{N/A, N/A}
+
+
+\iffalse
+
+INSTRUCTIONS: replace # by the homework number.  (if this is not
+ps#.tex, use the right file name)
+
+Clip out the ********* INSERT HERE ********* bits below and insert
+appropriate LaTeX code.  There is a section below for student macros.
+It is not recommended to change any other parts of the code.
+
+
+\fi
+%
+
+\documentclass[11pt]{article}
+
+
+% ==== Packages ====
+\usepackage{amsfonts,amsmath}
+\usepackage{latexsym}
+\usepackage{etoolbox}
+\usepackage{listings}
+\usepackage{totcount}
+\usepackage{fullpage}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usepackage[bottom]{footmisc}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\setlength{\footskip}{1in} \setlength{\textheight}{8.5in}
+
+\newcommand{\handout}[5]{
+	\renewcommand{\thepage}{#1, Page \arabic{page}}
+	\noindent
+	\begin{center}
+		\framebox{ \vbox{ \hbox to 5.78in { {\bf \course} \hfill #2 }
+				\vspace{4mm} \hbox to 5.78in { {\Large \hfill #5 \hfill} }
+				\vspace{2mm} \hbox to 5.78in { {\it #3 \hfill #4} }
+				\ifnum\me=0
+				\vspace{2mm} \hbox to 5.78in { {\it Collaborators: \collabs
+						\hfill} }
+				\fi
+		} }
+	\end{center}
+	\vspace*{4mm}
+}
+
+\newcounter{pppp}
+\newcounter{pppc}
+\newcommand{\prob}{\arabic{pppp}} %problem number
+\newcommand{\increase}{\stepcounter{pppp}\stepcounter{pppc}} %problem number
+
+% Arguments: Title, Number of Points
+\newcommand{\newproblem}[2]{
+	\increase
+	\restartlist{subtasks}
+	\ifnum\me=0
+	\ifnum\prob>0 \newpage \fi
+	\setcounter{page}{1}
+	\handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+	{\today}{Name: \name{} (\netid)}{Due: \due}
+	{Solutions to Problem \prob\ of Homework \num\ (#2)}
+	\else
+	\section*{Problem \num-\prob~(#1) \hfill {#2}}
+	\fi
+}
+
+\newlist{subtasks}{enumerate}{1}
+\setlist[subtasks]{label={(\alph*)},resume}
+
+\newcounter{numpppp}
+\loop
+\stepcounter{numpppp}
+% workaround bug in totcount (means \newtotcounter{points\arabic{pointsct}})
+\begingroup%
+\edef\tempcounter@@name{points\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\edef\tempcounter@@name{ecpoints\arabic{numpppp}}%
+\expandafter\newtotcounter\expandafter{\tempcounter@@name}%
+\endgroup
+\ifnum \value{numpppp}<500 % max number of tasks supported
+\repeat
+
+% formating of output
+\newcommand{\disppoints}[1]{%
+	\texorpdfstring{(#1~\ifnumequal{#1}{1}{point}{points})}{}
+}
+
+% adds and displays
+\newcommand{\points}[1]{%
+	\texorpdfstring{\addtocounter{points\arabic{pppc}}{#1}\disppoints{#1}}{}%
+}
+\newcommand{\ecpoints}[1]{%
+	\texorpdfstring{\addtocounter{ecpoints\arabic{pppc}}{#1}\ec \disppoints{#1}}{}%
+}
+
+% total points of current task         
+\newcommand{\currentpoints}{% total points of current task   
+	\texorpdfstring{\ifnumequal{\totvalue{ecpoints\arabic{pppc}}}{0}%
+		{\total{points\arabic{pppc}} points}%
+		{\total{points\arabic{pppc}}+\total{ecpoints\arabic{pppc}} points}}{}%
+}
+
+\newcommand{\mixedpoints}[2]{%
+	\texorpdfstring{%
+		\addtocounter{points\arabic{pppc}}{#1}%
+		\addtocounter{ecpoints\arabic{pppc}}{#2}%
+		(#1 (+#2) points)
+	}{}%
+}
+
+
+\def\squarebox#1{\hbox to #1{\hfill\vbox to #1{\vfill}}}
+\def\qed{\hspace*{\fill}
+	\vbox{\hrule\hbox{\vrule\squarebox{.667em}\vrule}\hrule}}
+\newenvironment{solution}{\begin{trivlist}\item[]{\bf Solution:}}
+	{\qed \end{trivlist}}
+\newenvironment{solsketch}{\begin{trivlist}\item[]{\bf Solution
+			Sketch:}} {\qed \end{trivlist}}
+\newenvironment{code}{\begin{tabbing}
+		12345\=12345\=12345\=12345\=12345\=12345\=12345\=12345\= \kill }
+	{\end{tabbing}}
+
+
+\newcommand{\hint}[1]{({\bf Hint}: {#1})}
+% Put more macros here, as needed.
+\newcommand{\room}{\medskip\ni}
+\newcommand{\brak}[1]{\langle #1 \rangle}
+\newcommand{\bit}[1]{\{0,1\}^{#1}}
+\newcommand{\zo}{\{0,1\}}
+\newcommand{\C}{{\cal C}}
+
+\newcommand{\nin}{\not\in}
+\newcommand{\set}[1]{\{#1\}}
+\renewcommand{\ni}{\noindent}
+\renewcommand{\gets}{\leftarrow}
+\renewcommand{\to}{\rightarrow}
+\newcommand{\assign}{:=}
+
+\newcommand{\AND}{\wedge}
+\newcommand{\OR}{\vee}
+\newcommand{\For}{\mbox{\bf for }}
+\newcommand{\To}{\mbox{\bf to }}
+\newcommand{\DownTo}{\mbox{\bf downto }}
+\newcommand{\Do}{\mbox{\bf do }}
+\newcommand{\If}{\mbox{\bf if }}
+\newcommand{\Then}{\mbox{\bf then }}
+\newcommand{\Else}{\mbox{\bf else }}
+\newcommand{\Elif}{\mbox{\bf elif }}
+\newcommand{\While}{\mbox{\bf while }}
+\newcommand{\Repeat}{\mbox{\bf repeat }}
+\newcommand{\Until}{\mbox{\bf until }}
+\newcommand{\Return}{\mbox{\bf return }}
+\newcommand{\Halt}{\mbox{\bf halt }}
+\newcommand{\Swap}{\mbox{\bf swap }}
+\newcommand{\Ex}[2]{\textrm{exchange } #1 \textrm{ with } #2}
+\newcommand{\Nil}{\mbox{\bf nil}}
+\newcommand{\In}{\mathsf{inOrder}}
+\newcommand{\Post}{\mathsf{postOrder}}
+\newcommand{\Pre}{\mathsf{preOrder}}
+\newcommand{\Root}{\mathsf{root}}
+\newcommand{\Parent}{\mathsf{parent}}
+\newcommand{\Left}{\mathsf{left}}
+\newcommand{\Right}{\mathsf{right}}
+\newcommand{\Middle}{\mathsf{middle}}
+\newcommand{\True}{\textbf{true}}
+\newcommand{\False}{\textbf{false}}
+\newcommand{\Print}{\mbox{\bf print }}
+\newcommand{\ec}{({\bf Extra Credit})}
+\newcommand{\note}{{\bf Note to Graders: }}
+\newcommand{\Rotate}{\textsc{Rotate}}
+\newcommand{\LRotate}{\textsc{LeftRotate}}
+\newcommand{\RRotate}{\textsc{RightRotate}}
+
+\newcommand{\notename}[2]{{\textcolor{red}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\sparsh}[1]{{\notename{Sparsh}{#1}}}
+
+\newcommand{\noname}[2]{{\textcolor{purple}{\footnotesize{\bf (#1:} {#2}{\bf ) }}}}
+\newcommand{\tanmay}[1]{{\noname{Tanmay}{#1}}}
+\newcommand{\Gray}{\textsc{gray}}
+\newcommand{\White}{\textsc{white}}
+\newcommand{\Black}{\textsc{black}}
+
+\newcommand{\MOST}[0]{\textsc{Most}}
+\newcommand{\Cups}[0]{\textsc{Cups}}
+\newcommand{\Local}[0]{\textsc{Local}}
+\begin{document}
+
+\ifnum\me=0
+
+% Collaborators (on a per task basis):
+%
+% Task 1: *********** INSERT COLLABORATORS HERE *********** 
+% Task 2: *********** INSERT COLLABORATORS HERE *********** 
+% etc.  
+%
+
+\fi
+
+% \handout{\name{} (\netid), Homework \num, Problem \arabic{pppp}}
+% 	{\today}{Name: \name{} }{Due: \due}
+% 	{Homework \num}
+
+\newproblem{Collaborators}{0 points}
+    \noindent
+Add the names and NetID(s) of your collaborators at the start of your solution file. If you haven't collaborated with anyone then say none. Do not leave it blank! You are allowed to consult external resources but you must write the solutions on your own keeping your resources closed. You must mention your resources here. 
+\ifnum\me<2
+\begin{solution}
+
+\end{solution}
+\fi
+
+\newproblem{Depravity-free Zone}{\currentpoints}
+
+
+
+Consider an $n \times n$ grid representing blocks in New York City. (Un)fortunately, some blocks contain an NUY building. You have two friends, Stringer and Omar, who prefer to avoid these buildings, so you want to identify the largest possible contiguous square region within the city grid that does not include any NUY buildings.
+
+More formally, you are given an $n \times n$ matrix $A$ of bits, where $A[i][j] = 1$ if there is an NUY building in the block at position $[i,j]$. Your goal is to devise an efficient dynamic programming algorithm to find the largest square region free of NUY buildings.
+
+Define an auxiliary $n \times n$ matrix $B$ such that $B[i][j]$ stores the size of the largest NUY-building-free square that has its bottom-right corner at position $(i,j)$.
+\\
+\\
+Let us try to derive a recursive relationship between $B[i][j]$ and $B[i-1][j-1]$. 
+
+\begin{subtasks}
+	\item \points{2}
+	What select values of $A$ need to be checked along with $B[i-1][j-1]$ to determine $B[i][j]$? Why is that so?
+	
+	\ifnum\me<2
+\begin{solution}\\
+
+There is a couple of values in $A$ we need to cater for.\\
+
+1. If $A[i][j] = 1$ (contains an NYU building) then $B[i][j]$ would certainly be $0$.\\
+
+2. Else if $A[i][j] = 0$ then $B[i][j]$ could potentially accumulate a larger size value.\\
+
+Let's have a look at the case 2 in more detail.\\
+
+To do that, we need to define an arbitrary value of $k$, which would be defining an arbitrary square free of NYU buildings, with the lower-right corner at $A[i - 1][j - 1]$. If rows $[j - 1]:[j - k]$ and columns $[i - 1]:[i - k]$ in matrix A are all having values of 0, meaning they are free of NYU buildings, then the square of $k+1$ can end on $A[i][j]$. Otherwise, we scan the columns and the rows for the presence of 1, and look for the smallest number of steps it would take to reach one of them. B[i][j] takes the the minimum of the two + 1 (itself).
+\end{solution}
+	\fi
+
+ \item \points{4}
+	Using the above information, find an $O(n^3)$ dynamic programming algorithm for filling the entire matrix $B$. Do not forget the initialization of $B$. Briefly justify the running time of your algorithm. 
+	
+	\ifnum\me<2
+\begin{solution}\\
+\begin{lstlisting}[language=Python]
+def fillB(A):
+
+    # contains an NYU building
+    if A[i][j] == 1:
+        B[i][j] == 0
+        
+    # instantiate B
+    elif i == 0 or j == 0:
+        if A[i][j] == 0:
+            B[i][j] = 1 
+        else:
+            B[i][j] == 0
+    else:
+        k = B[i - 1][j - 1]
+        true_square = True
+
+        for w in range(1, k):
+            if A[i][j - w]! = 0 or A[i - w][j] != 0:
+                true_square = False
+                break
+            if true_square and A[i][j - 1] == 0 and A[i - 1][j] == 0:
+                B[i][j] = k + 1
+            else:
+                B[i][j] = 1
+     
+\end{lstlisting}
+
+Running time:\\
+Number of cells: $O(n^2)$\\
+Time it takes to compute each entry: $O(n)$\\
+Thus, the final time complexity is: $\Theta(n^3)$
+\end{solution}
+	\fi
+
+\end{subtasks}
+To achieve a significant speed-up we will now derive a recursive relationship between $B[i][j]$ and $(B[i-1][j], B[i][j-1])$.
+
+\begin{subtasks}
+
+	\item \points{2} 
+	Let $p_1 = max(B[i-1][j], B[i][j-1])$ when $B[i-1][j] \neq B[i][j-1]$. Can $B[i][j]>p_1$? Justify why.
+	
+	\ifnum\me<2
+\begin{solution}\\
+No, it cannot, as a matter of fact $B[i][j]<=p_1$. Since $B[i][j]$ stores the largest square area free of NYU buildings which has a lower-right corner at $(i, j)$. $k$ exists iff there exists $k-1$ ending at $[i-1][j-1]$ which is also free of NYU buildings. Furthermore, $B[i-1][j] \neq B[i][j-1]$ implies that we are having NYU building either in the row or the same column of the element with the position $B[i][j]$. Thus, as per previous sections, we would have to select the smallest value of the two, as the matrix would not be able to expand, but the given condition $B[i][j]>p_1$ contradicts this claim, thus not possible.\\
+\end{solution}
+	\fi
+
+ \item \points{2} 
+	Let $p_2 = min(B[i-1][j], B[i][j-1])$ when $B[i-1][j] \neq B[i][j-1]$. Can $B[i][j]\leq p_2$ when $A[i][j] = 0$? Justify why.
+	
+	\ifnum\me<2
+\begin{solution}\\
+No, this also not possible. $B[i][j] \leq p2$ when $A[i][j] = 0$, this implies directly that $B[i][j]$ would have to be $p_2 + 1$, which is not $p_2$.
+\end{solution}
+	\fi
+
+  \item \points{2} 
+    Suppose $B[i-1][j] = B[i][j-1] = p$. Can $B[i][j] > p$. Justify why.
+	\ifnum\me<2
+\begin{solution}\\
+In this case, it is possible that $B[i][j]$ would be larger than $p$. If $B[i-1][j-1]$ is a lower-right corner of the matrix $p \times p$, and the $i-th$ row and $j-th$ column values preceding $A[i][j]$ are having all 0's, then $B[i][j]$ would be able to take a $(p+1)^2$ value, which is greater than $p$.
+\end{solution}
+	\fi
+
+   \item \points{4} 
+    Using the above three sub-parts, come up with a $O(n^2)$ dynamic programming for computing the matrix $B$. Briefly justify the running time of your algorithm. 
+	\ifnum\me<2
+\begin{solution}\\
+Initialize matrix $B$ of size $n \times n$. Each entry in the $0th$ row and $0th$ column would automatically take whatever the value of the corresponding element at $A[i][j]$ is. For example, if $A[i][j]$ has $0$, then $B[i][j]$ in that row/column would be $1$ and if $A[i][j]$ has $1$, then $B[i][j]$ in that row/column would be $0$. That would be working for the $0th$ row and $0th$ column and then we would be recursively filling the values of $B$.\\
+\begin{lstlisting}
+    for i in range(1,n):
+        for j range(1,n):
+            if A[i][j] == 1: 
+                B[i][j] = 0
+            elif i == 0 or j == 0:
+                B[i][j] = 1
+            else:
+                # here is where recursive step comes into play
+                B[i][j] = min(B[i - 1][j - 1], B[i][j - 1], B[i - 1][j]) + 1
+\end{lstlisting}\\
+
+This algo would be working in $O(n^2)$ time, as we run over the $A$ entries once and systematically fill in the values in B.
+
+\end{solution}
+	\fi
+	
+	
+	\item \points{1}
+	Explain how to give the final solution to the original problem, assuming you already comptuted $B$. What is the final time complexity for the best final solution?
+	
+	\ifnum\me<2
+\begin{solution} \\
+
+Simply go over the entire matrix $B$, with all the values and find the maximum value. One can initiate $max_val$ variable, which would be storing the $-inf$ at first but then incrementing whenever we encounter the larger value, this could be done with the max function. It would take us $O(n^2)$ to traverse the entire matrix B. And as per previous step, it would take us $O(n^2)$ to compute such a matrix in the first place. Thus, final complexity is still $O(n^2)$.
+
+\end{solution}
+	\fi
+	
+\end{subtasks}
+
+
+\newproblem{Cheesing}{\currentpoints}
+
+
+
+You are enrolled in a course titled "Soporific Algorithms" where you've consistently submitted answers for multiple homework assignments, receiving scores for each. Assume there are $n$ questions, with your scores represented by an array $A[1\ldots n]$. These scores may be either positive or negative.
+
+You have the option to select which homework questions will contribute to your final grade's homework component. Naturally, your objective is to achieve the highest possible total from the scores you choose. However, there are specific conditions that apply to how you pick
+this subset. 
+\begin{subtasks}
+	\item \points{1}
+ Give an $\Theta(n)$ solution to return the set	of indices so that you maximize the final score if no constraints were imposed. 
+    You can pick any number of indices to include in your solution.  
+	\ifnum\me<2
+\begin{solution}  
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+\end{subtasks}
+
+
+\noindent
+In parts (b) through (e), you must select a \textbf{continuous} segment of scores, meaning you choose a subarray from array $A$. You also have the option of selecting no elements at all. To specify your choice, you need to provide two indices, $i$ and $j$, with the final score being the sum of the elements from $i$ to $j$, denoted as $\sum_{k=i}^j A[k]$.
+\begin{subtasks}
+	\item \points{1} You are told that all the values in A are non-negative. Provide an $\theta(1)$ strategy to report $i,j$. Justify your strategy briefly. 
+	\ifnum\me<2
+\begin{solution}
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+	
+	\item \points{2} 
+	With no constraints on A. Devise a brute-force $O(n^2)$ that returns the maximum possible score.
+	\ifnum\me<2
+\begin{solution}   
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+	
+	\item \points{9} We will now derive an $O(n)$ time and $O(n)$ space algorithm using dynamic programming to solve the problem from part (c). The algorithm will utilize a one-dimensional
+	array $\MOST$ of length $n$. 
+	
+	\begin{itemize}
+		\item (1 point) Define $\MOST[n]$ \hint{ Look at the auxiliary matrix used in Q-2 for inspiration }
+		\item (1 point) State the base cases for $\MOST$.
+		\item (5 point) Give a \textbf{bottom-up iterative} algorithm that computes $\MOST[n]$.
+Clearly state and give a recursive formulation for $\MOST[n]$.		  
+		\item (2 point) After filling the array $\MOST[n]$, how would you find the maximum possible score. Justify the running time.
+	\end{itemize}
+	
+	\ifnum\me<2
+\begin{solution}
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+	
+	\item \points{3}
+ For this sub-part modify your solution to part (d) to also print the starting and ending index of the contiguous subarray giving the maximum sum. Given the array $\MOST$ give an algorithm that runs in time $O(n)$ to get the indices.
+	\ifnum\me<2
+\begin{solution}
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+	
+	\item \points{9}
+ For this sub-part, assume another contraint that you are \emph{you unable to pick two adjacent scores} 
+	i.e, if index $j$ is picked, indices $j+1$ and $j-1$ cannot be picked. \emph{You need to 
+		pick at least one score}.  Develop a dynamic programming algorithm that runs in $O(n)$ time and uses $O(n)$ space. This algorithm should employ a one-dimensional array, $\MOST$, with a size of $n$.
+
+	\begin{itemize}
+		\item (1 point) Define $\MOST[n]$. \hint{ Look at the auxiliary matrix used in Q-2 for inspiration }
+		\item (1 point) State the base cases for $\MOST$.
+		\item (5 point) Give a \textbf{top-down recursive} algorithm that computes $\MOST[n]$. Clearly state and give a recursive formulation for $\MOST[n]$.	
+		\item (2 point) After filling the array $\MOST[n]$, how would you find the maximum sum that form an subarray. Justify the running time.
+	\end{itemize}
+	\ifnum\me<2
+\begin{solution}
+INSERT YOUR SOLUTION HERE
+\end{solution}
+	\fi
+\end{subtasks}
+
+\newproblem{OCD}{\currentpoints}
+Consider the problem of neatly printing a paragraph with a monospaced font (all characters having the same width). The input text is a sequence of $n$ words of lengths $l_1, l_2, \ldots, l_n$, measured in characters, which are to be printed neatly on a number of lines that hold a maximum of $M$ characters each. No word exceeds the line length, so that $l_i \leq M$ for $i = 1, 2, \ldots, n$. The criterion of neatness is as follows. If a given line contains words $i$ through $j$, where $i \leq j$, and exactly one space appears between words, then the number of extra space characters at the end of the line is $M - \sum_{k=i}^j l_k - (j - i)$, which must be nonnegative so that the words fit on the line. The goal is to minimize the sum, over all lines except the last, of the cubes of the numbers of extra space characters at the ends of lines. 
+
+
+\begin{subtasks}
+    \item \ecpoints{5} Give a dynamic-programming algorithm to print a paragraph of $n$ words neatly. Analyze the running time and space requirements of your algorithm.
+    \ifnum\me<2
+    \begin{solution}
+        INSERT YOUR SOLUTION HERE
+    \end{solution}
+    \fi
+\end{subtasks}
+
+
+
+
+\end{document}
+
+

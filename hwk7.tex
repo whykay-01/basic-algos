@@ -491,23 +491,23 @@ The most naive yet efficient iterative approach to solve this problem is about h
 \begin{solution}\\
 
 
-% \begin{algorithm}
-% \caption{min\_span}
-% \begin{algorithmic}[1]
-% \Function{min\_span}{$A, l, m$}
-%     \State $p \gets l$
-%     \State $q \gets m$
-%     \State $p_new \gets \text{None}$
-%     \State $q_new \gets \text{None}$
-%     \State $p, q \gets \text{part_c}(A, l, m)$
-%     \While{$p \neq p_new$ and $q \neq q_new$}
-%         \State $r1 \gets \text{part_c}(A, p, \frac{p + q}{2})$
-%         \State $r2 \gets \text{part_c}(A, \frac{p + q}{2}, q)$
-%         \State new range $[p_new][q_new] \gets \min(r1, r2)$
-%     \EndWhile
-% \EndFunction
-% \end{algorithmic}
-% \end{algorithm}
+\begin{algorithm}
+\caption{min\_span}
+\begin{algorithmic}[1]
+\Function{min\_span}{$A, l, m$}
+    \State $p1 \gets l$
+    \State $q1 \gets m$
+    \State $p2 \gets \text{None}$
+    \State $q2 \gets \text{None}$
+    \State $p1, q1 \gets \text{PART\_C}(A, l, m)$
+    \While{$p1 \neq p2$ and $q1 \neq q2$}
+        \State $part1 \gets \text{PART\_C}(A, p1, \frac{p1 + q1}{2})$
+        \State $part2 \gets \text{PART\_C}(A, \frac{p1 + q1}{2}, q1)$
+        \State result $[p2:q2] \gets \min(part1, part2)$
+    \EndWhile
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
 
 \end{solution}
 	\fi
@@ -518,7 +518,10 @@ The most naive yet efficient iterative approach to solve this problem is about h
 	above algorithm, with appropriate base cases. Solve for
 	it using any method of your choice. 
 	\ifnum\me<2
-\begin{solution}INSERT YOUR SOLUTION HERE\end{solution}
+\begin{solution}\\
+We call the recurrence twice $n$ times, so the recurrence relation would look like this: $T(n) = n \cdot T(n/2) + 1$. Using Master's Theorem we get $O(n \cdot logn)$. 
+
+\end{solution}
 	\fi
 	
 	
@@ -535,7 +538,11 @@ The most naive yet efficient iterative approach to solve this problem is about h
 	\hint{Consider the solution from the previous subproblem but with recursions on parts of sizes $n-1$ and $1$ instead of $n/2$ and $n/2$. Unwind the recursion.}
 	
 	\ifnum\me<2
-\begin{solution}INSERT YOUR SOLUTION HERE\end{solution}
+\begin{solution}\\
+
+It is a classic sliding window problem, where we would be iterating over the array with a window size set to 3, since this is the most-minimum span we can ever get by the definition of the problem and we can do it iteratively until we find the "match". This algorithm should be done for a couple of iterations from 3 till n-k, where k would be the number of the least frequent element from the spanning set appearing in the array. Once that is done, we should end up having the most optimal minimum span we were looking for, since we increase the window, there is a high chance we will find a span until we reach the last iteration over. This algorithm takes $O(n)$ time, since it simply goes over the array with the sliding window.
+
+\end{solution}
 	\fi
 \end{subtasks}
 
