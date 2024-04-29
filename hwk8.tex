@@ -365,7 +365,7 @@ This algo would be working in $O(n^2)$ time, as we run over the $A$ entries once
 	\ifnum\me<2
 \begin{solution} \\
 
-Simply go over the entire matrix $B$, with all the values and find the maximum value. One can initiate $max_val$ variable, which would be storing the $-inf$ at first but then incrementing whenever we encounter the larger value, this could be done with the max function. It would take us $O(n^2)$ to traverse the entire matrix B. And as per previous step, it would take us $O(n^2)$ to compute such a matrix in the first place. Thus, final complexity is still $O(n^2)$.
+Simply go over the entire matrix $B$, with all the values and find the maximum value. One can initiate $maxVal$ variable, which would be storing the negative infinity at first but then incrementing whenever we encounter the larger value, this could be done with the max function. It would take us $O(n^2)$ to traverse the entire matrix B. And as per previous step, it would take us $O(n^2)$ to compute such a matrix in the first place. Thus, final complexity is still $O(n^2)$.
 
 \end{solution}
 	\fi
@@ -386,8 +386,12 @@ this subset.
  Give an $\Theta(n)$ solution to return the set	of indices so that you maximize the final score if no constraints were imposed. 
     You can pick any number of indices to include in your solution.  
 	\ifnum\me<2
-\begin{solution}  
-INSERT YOUR SOLUTION HERE
+\begin{solution}\\
+
+Initiate an empty set, and fill it with the indices of the scores which are greater than 0. This could be done by iterating through the list of all the scores once. And systematically appending all of them.
+
+
+
 \end{solution}
 	\fi
 \end{subtasks}
@@ -398,16 +402,32 @@ In parts (b) through (e), you must select a \textbf{continuous} segment of score
 \begin{subtasks}
 	\item \points{1} You are told that all the values in A are non-negative. Provide an $\theta(1)$ strategy to report $i,j$. Justify your strategy briefly. 
 	\ifnum\me<2
-\begin{solution}
-INSERT YOUR SOLUTION HERE
+\begin{solution}\\
+
+Since we are guaranteed that we won't have any negative values, the entire array itself is already the largest score we can accumulate accross the array. Therefore, simply report $(1, n)$ for $i, j$
 \end{solution}
 	\fi
 	
 	\item \points{2} 
 	With no constraints on A. Devise a brute-force $O(n^2)$ that returns the maximum possible score.
 	\ifnum\me<2
-\begin{solution}   
-INSERT YOUR SOLUTION HERE
+\begin{solution}\\
+\begin{lstlisting}[language=Python]
+def max_subarray_sum(arr):
+    max_sum = 0
+    
+    # Outer loop to iterate over each possible starting point of subarray
+    for i in range(len(arr)):
+        current_sum = 0
+        
+        # Inner loop to calculate sum of subarrays starting from i
+        for j in range(i, len(arr)):
+            current_sum += arr[j]
+            max_sum = max(max_sum, current_sum)
+    
+    return max_sum
+\end{lstlisting}
+
 \end{solution}
 	\fi
 	
@@ -424,7 +444,15 @@ Clearly state and give a recursive formulation for $\MOST[n]$.
 	
 	\ifnum\me<2
 \begin{solution}
-INSERT YOUR SOLUTION HERE
+
+1. $Most[n] = max(A[n], Most[n - 1] + A[n])$\\
+
+2. Base case is when we hit $Most[0]$. Whenever we have Most[0], we take $max(A[0],0)$ as a value, where we take the score itself in case it's positive, or $0$ otherwise (basically not taking the score into account).\\
+
+3.\\
+
+4.\\
+
 \end{solution}
 	\fi
 	
